@@ -1,5 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
+import { buildParams } from "./utils";
 
 export const getActiveMarkets = {
   description: "Get active esports prediction markets from Polymarket",
@@ -15,13 +16,14 @@ export const getActiveMarkets = {
         params: {
           limit,
           ascending: true,
-          series_id: [10311, 10309],
+          series_id: [10311, 10310, 10309, 10369],
           tag_id: 100639,
           closed: false,
           live: true,
           event_date: new Date().toISOString().split("T")[0],
-          order: "endDate"
-        }
+          order: "startTime"
+        },
+        paramsSerializer: (params) => buildParams(params)
       }
     );
 
@@ -33,7 +35,8 @@ export const getActiveMarkets = {
         question: event.title,
         probability: market?.outcomes?.[0]?.price ?? null,
         volume: market?.volume ?? 0,
-        endDate: event.endDate
+        startTime: event.startTime,
+        score: event.score,
       };
     });
   }

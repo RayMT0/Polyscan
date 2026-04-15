@@ -4,6 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  runtimeConfig: {
+    MCP_URL: process.env.MCP_URL,
+  },
   css: ['@/assets/css/main.css'],
   vite: {
     optimizeDeps: {
@@ -15,5 +18,8 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-  }
+  },
+  alias: {
+    "@": "/",
+  },
 })

@@ -15,7 +15,7 @@ app.post("/mcp", async (req, res) => {
     const selectedTool = tools[tool as keyof typeof tools];
     const parsed = selectedTool.inputSchema.parse(input);
     const result = await selectedTool.handler(parsed);
-
+    console.log("[MCP] Refetch Success");
     res.json({ result });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
