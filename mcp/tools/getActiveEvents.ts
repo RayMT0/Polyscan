@@ -2,8 +2,8 @@ import axios from "axios";
 import { z } from "zod";
 import { buildParams } from "./utils";
 
-export const getActiveMarkets = {
-  description: "Get active esports prediction markets from Polymarket",
+export const getActiveEvents = {
+  description: "Get live esports prediction events from Polymarket",
 
   inputSchema: z.object({
     limit: z.number().optional().default(10)
@@ -33,10 +33,9 @@ export const getActiveMarkets = {
       return {
         id: event.id,
         question: event.title,
+        liquidity: event.liquidity,
+        volume: event.volume24hr,
         probability: market?.outcomes?.[0]?.price ?? null,
-        volume: market?.volume ?? 0,
-        startTime: event.startTime,
-        score: event.score,
       };
     });
   }

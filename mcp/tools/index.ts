@@ -1,5 +1,5 @@
-import { getActiveMarkets } from "./getActiveMarkets";
+import { getActiveEvents } from "./getActiveEvents";
 
 export const tools = {
-  getActiveMarkets
+  getActiveEvents
 };

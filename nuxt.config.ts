@@ -5,9 +5,18 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   runtimeConfig: {
-    MCP_URL: process.env.MCP_URL,
+    MCP_URL: process.env.MCP_URL || "http://localhost:3001",
   },
-  css: ['@/assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
+  modules: ['@nuxt/ui'],
+  app: {
+    head: {
+      title: 'Esports Predictions - Live Dashboard',
+      meta: [
+        { name: 'description', content: 'Live esports prediction events and PnL tracking' }
+      ]
+    }
+  },
   vite: {
     optimizeDeps: {
       include: [
@@ -18,8 +27,5 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-  },
-  alias: {
-    "@": "/",
   },
 })
