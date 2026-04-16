@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
                 tag_id: 100639,
                 closed: false,
                 active: true,
+                live: true,
                 ended: false,
                 event_date: new Date().toISOString().split("T")[0],
                 order: "startTime"

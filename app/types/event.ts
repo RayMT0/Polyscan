@@ -4,7 +4,7 @@ export interface Event {
   resolutionSource: string;
   icon: string;
   liquidity: number;
-  probability: number;
+  probability: number | null;
   volume: number;
   startTime: string;
   score: string;

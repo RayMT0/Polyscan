@@ -62,13 +62,13 @@ const hktype = ref(true);
             </div>
 
             <!-- Status Badge -->
-            <div class="flex items-center gap-2 lg:min-w-28">
+            <div class="flex items-center justify-center gap-2 lg:min-w-28">
                 <UBadge :color="statusColor" variant="subtle" size="sm">
                     <span
                         v-if="event.live"
-                        class="mr-1.5 inline-block size-2 rounded-full bg-success animate-pulse">
-                        {{ statusLabel }}
-                    </span>
+                        class="mr-0.5 inline-block size-2 rounded-full bg-success animate-pulse"
+                    />
+                    {{ statusLabel }}
                 </UBadge>
             </div>
 
