@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import EmbedCard from '~/components/EmbedCard.vue';
 import EventCard from '~/components/EventCard.vue';
 
 const { data: events, pending } = await useFetch('/api/events', {
@@ -41,7 +42,7 @@ const stats = [
                         <UIcon name="i-lucide-gamepad-2" class="size-5 text-inverted" />
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-default">Esports Predictions</h1>
+                        <h1 class="text-xl font-bold text-default">Polyscan</h1>
                         <p class="text-sm text-muted">Live prediction events</p>
                     </div>
                 </div>
@@ -62,12 +63,20 @@ const stats = [
             <!-- Events Sections -->
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-                    <h2 class="text-2xl font-bold text-default">Prediction Events</h2>
+                    <h2 class="text-2xl font-bold text-default">Live Events</h2>
 
                     <!-- Event status filter or odds type -->
                 </div>
 
                 <!-- Event List -->
+                <!-- <div class="flex flex-row gap-4 flex-wrap">
+                    <EmbedCard 
+                        v-for="e in events"
+                        :key="e.id"
+                        :event="e"
+                    />
+                </div> -->
+
                 <div class="flex flex-col gap-4">
                     <EventCard 
                         v-for="e in events"
@@ -82,6 +91,7 @@ const stats = [
                         description="Check back later for upcoming prediction events."
                     />
                 </div>
+
             </div>
         </main>
     </div>

@@ -1,6 +1,7 @@
 export interface Event {
   id: string;
   question: string;
+  slug: string;
   resolutionSource: string;
   icon: string;
   liquidity: number;
@@ -12,6 +13,8 @@ export interface Event {
   live: boolean;
   seriesSlug: string;
   market: Market | null;
+  teamA: TeamResponse | null;
+  teamB: TeamResponse | null;
 }
 
 export interface Market {
@@ -31,6 +34,7 @@ export interface Market {
 export type EventResponse = {
   id: string;
   question: string;
+  slug: string;
   resolutionSource: string;
   icon: string;
   liquidity: number;
@@ -42,6 +46,8 @@ export type EventResponse = {
   live: boolean;
   seriesSlug: string;
   market: MarketResponse | null;
+  teamA: TeamResponse | null;
+  teamB: TeamResponse | null;
 };
 
 export type MarketResponse = {
@@ -57,3 +63,10 @@ export type MarketResponse = {
   gameStartTime: string;
   sportsMarketType: string;
 };
+
+export type TeamResponse = {
+  name: string;
+  logo: string;
+  abbreviation: string;
+  color: string;
+}

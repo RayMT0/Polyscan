@@ -1,9 +1,25 @@
 <script setup lang="ts">
-import type { Event } from '~/types/event';
+import type { Event, TeamResponse } from '~/types/event';
+
 
 const props = defineProps<{
     event: Event;
 }>();
+
+const titleLabel = computed(() => {
+    switch(props.event.seriesSlug) {
+        case 'counter-strike':
+            return 'CS2';
+        case 'valorant':
+            return 'Valorant';
+        case 'dota-2':
+            return 'Dota 2';
+        case 'league-of-legends':
+            return 'League of Legends';
+        default:
+            return props.event.seriesSlug || 'Unknown Series';
+    }
+})
 
 const statusColor = computed(() => {
   if(props.event.live) {
@@ -52,11 +68,17 @@ const hktype = ref(true);
         <div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6">
             <!-- Game Info -->
             <div class="flex items-center gap-3 lg:min-w-48">
-                <div class="flex items-center justify-center size-12 rounded-lg bg-elevated">
-                    <UIcon :name="event.icon" class="size-6 text-primary" />
+                <div class="flex items-center justify-center size-12 rounded-lg">
+                    <NuxtImg 
+                        :src="event.seriesSlug === 'dota-2' 
+                        ? '/dota2-league.png' 
+                        : event.icon"
+                        loading="lazy"
+                        format="png"
+                        class="size-12 object-contain rounded-lg" />
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-semibold text-default">{{ event.seriesSlug }}</span>
+                    <span class="font-semibold text-default">{{ titleLabel }}</span>
                     <span class="text-sm text-muted">To be announced</span>
                 </div>
             </div>
@@ -84,8 +106,12 @@ const hktype = ref(true);
                     : 'cursor-default',
                 ]">
                     <div class="flex items-center gap-3">
-                        <span class="text-2xl">Team 1 logo</span>
-                        <span class="text-2xl">{{ event.market?.team1 || 'Team A' }}</span>
+                        <NuxtImg 
+                            :src="event.teamA?.logo || ''"
+                            loading="lazy"
+                            format="png"
+                            class="size-8 object-contain rounded-lg" />
+                        <span class="font-medium text-default">{{ event.market?.team1 || 'Team A' }}</span>
                     </div>
                     <UBadge color="neutral" variant="outline" size="sm">
                         {{ hktype ? (1/(event.market?.odds1 || 1)-1).toFixed(2) : event.market?.odds1 || 'N/A' }}
@@ -104,8 +130,12 @@ const hktype = ref(true);
                     : 'cursor-default',
                 ]">
                     <div class="flex items-center gap-3">
-                        <span class="text-2xl">Team 2 logo</span>
-                        <span class="text-2xl">{{ event.market?.team2 || 'Team B' }}</span>
+                        <NuxtImg 
+                            :src="event.teamB?.logo || ''"
+                            loading="lazy"
+                            format="png"
+                            class="size-8 object-contain rounded-lg" />
+                        <span class="font-medium text-default">{{ event.market?.team2 || 'Team B' }}</span>
                     </div>
                     <UBadge color="neutral" variant="outline" size="sm">
                         {{ hktype ? (1/(event.market?.odds2 || 1)-1).toFixed(2) : event.market?.odds2 || 'N/A' }}
@@ -115,10 +145,10 @@ const hktype = ref(true);
 
             <!-- Time  -->
             <div class="flex items-center gap-2 lg:min-w-24 justify-end">
-                <UIcon name="i-lucide-clock" class="size-4 text-muted" />
                 <span class="text-sm text-muted">
-                    {{ event.live ? 'In Progress' : formatTime(event.startTime) }}
+                    Live Odds
                 </span>
+                <UIcon name="i-lucide-chevron-right" class="size-4 text-muted" />
             </div>
         </div>
 

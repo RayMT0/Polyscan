@@ -8,10 +8,13 @@ export default defineNuxtConfig({
     MCP_URL: process.env.MCP_URL || "http://localhost:3001",
   },
   css: ['~/assets/css/main.css'],
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@nuxt/image'],
+  image: {
+    domains: ['polymarket-upload.s3.us-east-2.amazonaws.com']
+  },
   app: {
     head: {
-      title: 'Esports Predictions - Live Dashboard',
+      title: 'Polyscan',
       meta: [
         { name: 'description', content: 'Live esports prediction events and PnL tracking' }
       ]
