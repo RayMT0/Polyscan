@@ -15,6 +15,7 @@ export interface Event {
   market: Market | null;
   teamA: TeamResponse | null;
   teamB: TeamResponse | null;
+  eventMetadata: EventMetadataResponse;
 }
 
 export interface Market {
@@ -48,6 +49,7 @@ export type EventResponse = {
   market: MarketResponse | null;
   teamA: TeamResponse | null;
   teamB: TeamResponse | null;
+  eventMetadata: EventMetadataResponse;
 };
 
 export type MarketResponse = {
@@ -69,4 +71,10 @@ export type TeamResponse = {
   logo: string;
   abbreviation: string;
   color: string;
+}
+
+export type EventMetadataResponse = {
+  league: string;
+  serie: string;
+  tournament: string;
 }

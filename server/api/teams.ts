@@ -1,5 +1,5 @@
 import axios from "axios";
-import { buildParams } from "~/composables/utils";
+import { buildParams } from "~/utils/format";
 import type { TeamResponse } from "~/types/event";
 
 export default defineEventHandler(async (event) => {
