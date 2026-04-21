@@ -33,11 +33,12 @@ const stats = [
 </script>
 
 <template>
-    <div class="min-h-screen bg-default">
+    <div class="flex min-w-0 min-h-0 flex-1 flex-col lg:flex-row lg:gap-2">
     <!-- Main Content -->
-        <!-- Stats Card -->
+        <!-- Game Filters -->
+        <GameFilter />
         <!-- Events Sections -->
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 pl-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
                 <h2 class="text-2xl font-bold text-default">Live Events</h2>
 

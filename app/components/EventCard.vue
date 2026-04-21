@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Event, TeamResponse } from '~/types/event';
+import type { Event } from '~/types/event';
 import { formatGameScore, formatVolume } from '~/utils/format';
 
 
@@ -50,7 +50,7 @@ const hktype = ref(true);
 
 <template>
     <UCard
-    class="group relative overflow-hidden transition-all duration-300 hover:ring-1 hover:ring-primary/50"
+    class="group relative overflow-hidden transition-all duration-300 hover:ring-1 hover:ring-primary/50 cursor-default"
     :class="event.live ? 'ring-1 ring-success/30' : ''"
     >
         <div class="flex flex-col gap-4">
@@ -69,16 +69,16 @@ const hktype = ref(true);
                 </div>
 
                 <!-- Game Description -->
-                <div class="flex flex-col">
+                <div class="flex flex-col flex-1">
                     <!-- Game Title & Period -->
                     <div class="flex flex-row gap-3 items-center">
                         <!-- Status Badge -->
                         <div class="flex items-center gap-1">
-                            <div :class="'text-' + statusColor" class="text-xs font-bold">
-                                <span
-                                    v-if="event.live"
-                                    class="mr-0.5 inline-block size-2 rounded-full bg-success animate-pulse"
-                                />
+                            <div :class="'text-' + statusColor" class="text-xs font-bold flex flex-row items-center gap-2">
+                                <span v-if="event.live" class="relative flex size-2">
+                                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75"></span>
+                                    <span class="relative inline-flex size-2 rounded-full bg-success"></span>
+                                </span>
                                 {{ statusLabel }}
                             </div>
                         </div>
@@ -90,14 +90,18 @@ const hktype = ref(true);
                         </div>
                     </div>
                     <!-- Game Volume Traded & League -->
-                    <div class="flex flex-row gap-1">
-                        <span class="text-sm text-muted">${{ formatVolume(event.volume) }} Vol.</span>
-                        <span class="text-sm text-muted">
-                            {{ event.eventMetadata.league }} {{ event.eventMetadata.serie }}
+                    <div class="max-w-0 min-w-full overflow-hidden">
+                        <span class="flex flex-row gap-1 line-clamp-1 whitespace-nowrap! overflow-hidden">
+                            <span class="text-sm text-muted">${{ formatVolume(event.volume) }} Vol.</span>
+                            <span class="text-sm text-toned">
+                                {{ event.eventMetadata.league }} {{ event.eventMetadata.serie }} {{ event.eventMetadata.tournament }}
+                            </span>
                         </span>
                     </div>
                 </div>
                 
+                <!-- Game Stream -->
+                <WatchButton :link="event.resolutionSource"/>
             </div>
 
         <!-- Main Row -->
@@ -110,16 +114,21 @@ const hktype = ref(true);
                     <UBadge color="neutral" variant="outline" size="lg" class="flex justify-center items-center h-6 bg-muted px-2 min-w-8 tabular-nums">
                         {{ formatGameScore(event.score, 1) }}
                     </UBadge>
-                    <div class="flex items-center gap-3 w-full">
+                    <div class="flex items-center gap-3 w-full overflow-hidden min-w-0 max-w-full">
                         <NuxtImg 
-                            :src="event.teamA?.logo || ''"
+                            :src="event.teamA?.logo === '' ? '/val-logo.png' : event.teamA?.logo || ''"
                             loading="lazy"
                             format="png"
                             class="size-8 object-contain rounded-lg" />
-                        <span 
-                            class="flex flex-1 min-w-0 max-w-full font-medium text-default overflow-hidden">
-                            {{ event.market?.team1 || 'Team A' }}
-                        </span>
+
+                        <div class="flex flex-1 items-baseline min-w-0 max-w-full overflow-hidden">
+                            <span 
+                                class="font-semibold text-default line-clamp-1 whitespace-nowrap!">
+                                <span class="ml-1">
+                                    {{ event.market?.team1 || 'Team A' }}
+                                </span>
+                            </span>
+                        </div>
                     </div>
                     
                 </div>
@@ -131,7 +140,7 @@ const hktype = ref(true);
                     </UBadge>
                     <div class="flex items-center gap-3 w-full">
                         <NuxtImg 
-                            :src="event.teamB?.logo || ''"
+                            :src="event.teamB?.logo === '' ? '/val-logo.png' : event.teamB?.logo || ''"
                             loading="lazy"
                             format="png"
                             class="size-8 object-contain rounded-lg" />
@@ -147,41 +156,19 @@ const hktype = ref(true);
             <!-- Odds Button -->
             <div class="flex flex-1 justify-end items-center"> 
                 <div class="flex items-end gap-2 w-64.5 @max-[490px]:w-full">
-                    <button 
-                        :style="{'--team-color': event.teamA?.color || '#ccc'}" 
-                        :class="event.teamA?.color ? 'bg-(--team-color)' : 'bg-primary'"
-                        class="flex-1 w-full rounded-lg h-11 cursor-pointer hover:opacity-90"
-                        type="button"
-                        selected="true"
-                        data-three-dee
-                        tabindex="0"
-                        data-tapstate="rest"
-                    >
-                        <p class="flex flex-1 h-full items-center text-center justify-center font-semibold leading-5.21!">
-                            <span class="text-xs text-white opacity-70">
-                                {{ event.teamA?.abbreviation.toUpperCase() || 'N/A' }}
-                            </span>
-                            <span class="text-sm ml-1 opacity-100">
-                                {{ hktype ? (1/(event.market?.odds1 || 1)-1).toFixed(2) : event.market?.odds1 || 'N/A' }}
-                            </span>
-                        </p>
-                    </button>
-                    <button
-                        :style="{'--team-color': event.teamB?.color || '#ccc'}" 
-                        :class="event.teamB?.color ? 'bg-(--team-color)' : 'bg-primary'"
-                        class="flex-1 w-full rounded-lg h-11 cursor-pointer hover:opacity-90"
-                    >
-                        <p class="flex flex-1 h-full items-center text-center justify-center font-semibold leading-5.21!">
-                            <span class="text-xs text-white opacity-70">
-                                {{ event.teamB?.abbreviation.toUpperCase() || 'N/A' }}
-                            </span>
-                            <span class="text-sm ml-1 opacity-100">
-                                {{ hktype ? (1/(event.market?.odds2 || 1)-1).toFixed(2) : event.market?.odds2 || 'N/A' }}
-                            </span>
-                        </p>
-                    </button>
+                    <OddsButton
+                        :color="event.teamA?.color || null"
+                        :abbreviation="event.teamA?.abbreviation.toUpperCase() || 'N/A'"
+                        :odds="hktype ? (1/(event.market?.odds1 || 1)-1).toFixed(2) : event.market?.odds1 || 'N/A'"
+                    />
+                    <OddsButton
+                        :color="event.teamB?.color || null"
+                        :abbreviation="event.teamB?.abbreviation.toUpperCase() || 'N/A'"
+                        :odds="hktype ? (1/(event.market?.odds2 || 1)-1).toFixed(2) : event.market?.odds2 || 'N/A'"
+                    />
                 </div>
             </div>
+            
         </div>
             <!-- Time  -->
             <!-- <div class="flex items-center gap-2 lg:min-w-24 justify-end">
