@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    Nothing here...
+    Building...
 </template>

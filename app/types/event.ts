@@ -18,6 +18,15 @@ export interface Event {
   eventMetadata: EventMetadataResponse;
 }
 
+export interface EventCounts{
+  live: number,
+  soon: number,
+  dota2: number,
+  cs2: number,
+  lol: number,
+  valo: number,
+}
+
 export interface Market {
   id: string;
   question: string;

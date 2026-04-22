@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import IconVal from './icons/IconVal.vue';
 import IconLive from './icons/IconLive.vue';
+import IconCS2 from './icons/IconCS2.vue';
+import IconLoL from './icons/IconLoL.vue';
+
+import type { EventCounts } from '~/types/event';
+
+const { data: counts, pending } = await useFetch<EventCounts>('/api/events-counts');
 
 </script>
 
 <template>
     <div 
-        class="hidden lg:flex w-47.5 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky"
+        class="hidden lg:flex w-47.5 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky pt-6"
         style="top: var(--navbar-height); height: calc(100vh - var(--navbar-height));"
     >
     <!-- Filter Items -->
-        <a 
-            href=""
-            class="flex flex-row justify-between items-center rounded-md px-3 py-3 w-full hover:bg-accented/50 cursor-pointer"
+        <NuxtLink 
+            raw
+            to="/events"
+            class="flex flex-row justify-between items-center rounded-md px-3 py-3 w-full hover:bg-muted cursor-pointer"
+            active-class="bg-muted"
         >
             <div class="flex flex-row items-center gap-x-2.5 flex-1 min-w-0">
                 <!-- Icon -->
@@ -20,10 +28,18 @@ import IconLive from './icons/IconLive.vue';
                 <!-- Filter Name -->
                 <p class="text-body-base font-semibold truncate">Live</p>
             </div>
-        </a>
-        <a 
-            href=""
-            class="flex flex-row justify-between items-center rounded-md px-3 py-3 w-full hover:bg-accented/50 cursor-pointer"
+            <div v-if="pending" class="text-sm text-muted font-semibold">
+                <UIcon name="i-lucide-loader-circle" class="size-5 shrink-0 text-muted animate-spin" />
+            </div>
+            <div v-else class="text-sm text-muted font-semibold">
+                <p>{{ counts?.live || 0 }}</p>
+            </div>
+        </NuxtLink>
+        <NuxtLink 
+            raw
+            to="/events/soon"
+            class="flex flex-row justify-between items-center rounded-md px-3 py-3 w-full hover:bg-muted cursor-pointer"
+            active-class="bg-muted"
         >
             <div class="flex flex-row items-center gap-x-2.5 flex-1 min-w-0">
                 <!-- Icon -->
@@ -31,16 +47,20 @@ import IconLive from './icons/IconLive.vue';
                 <!-- Filter Name -->
                 <p class="text-body-base font-semibold truncate">Upcoming</p>
             </div>
-        </a>
-        <div class="pb-2 border-b border-neutral-100 mb-2 w-full"></div>
+            <div class="text-sm text-muted font-semibold">{{ counts?.soon || '' }}</div>
+        </NuxtLink>
+        <div class="pb-2 border-b border-muted mb-2 w-full"></div>
         <div class="flex items-center px-3 mt-4 mb-3">
             <p class="text-[11px] uppercase text-muted font-medium whitespace-nowrap tracking-wider">Games</p>
         </div>
         <!-- Games Filter Items -->
         <div>
-            <button
-                type="button"
-                class="flex flex-row items-center justify-between rounded-md p-3 w-full hover:bg-accented/50 cursor-pointer"
+            <!-- Dota2 -->
+            <NuxtLink
+                raw
+                to="/events/dota-2"
+                class="flex flex-row items-center justify-between rounded-md p-3 w-full hover:bg-muted cursor-pointer"
+                active-class="bg-muted"
             >
             <!-- Game Icon & Name -->
                 <div class="flex items-center gap-x-2.5 min-w-0">
@@ -53,11 +73,47 @@ import IconLive from './icons/IconLive.vue';
                     <p class="text-body-base font-semibold truncate text-left">Dota 2</p>
                 </div>
                 <!-- Game Event Count -->
-                <div class="text-sm text-muted font-semibold">20</div>
-            </button>
-            <button
-                type="button"
-                class="flex flex-row items-center justify-between rounded-md p-3 w-full hover:bg-accented/50 cursor-pointer"
+                <div class="text-sm text-muted font-semibold">{{ counts?.dota2 || '' }}</div>
+            </NuxtLink>
+
+            <!-- League of Legends -->
+            <NuxtLink
+                raw
+                to="/events/league-of-legends"
+                class="flex flex-row items-center justify-between rounded-md p-3 w-full hover:bg-muted cursor-pointer"
+                active-class="bg-muted"
+            >
+            <!-- Game Icon & Name -->
+                <div class="flex items-center gap-x-2.5 min-w-0">
+                    <IconLoL />
+                    <p class="text-body-base font-semibold truncate text-left">LoL</p>
+                </div>
+                <!-- Game Event Count -->
+                <div class="text-sm text-muted font-semibold">{{ counts?.lol || '' }}</div>
+            </NuxtLink>
+
+            <!-- CS2 -->
+            <NuxtLink
+                raw
+                to="/events/cs2"
+                class="flex flex-row items-center justify-between rounded-md p-3 w-full hover:bg-muted cursor-pointer"
+                active-class="bg-muted"
+            >
+            <!-- Game Icon & Name -->
+                <div class="flex items-center gap-x-2.5 min-w-0">
+                    <IconCS2 />
+                    <p class="text-body-base font-semibold truncate text-left">CS2</p>
+                </div>
+                <!-- Game Event Count -->
+                <div class="text-sm text-muted font-semibold">{{ counts?.cs2 || '' }}</div>
+            </NuxtLink>
+
+            <!-- Valorant -->
+            <NuxtLink
+                raw
+                to="/events/valorant"
+                class="flex flex-row items-center justify-between rounded-md p-3 w-full hover:bg-muted cursor-pointer"
+                active-class="bg-muted"
             >
             <!-- Game Icon & Name -->
                 <div class="flex items-center gap-x-2.5 min-w-0">
@@ -65,8 +121,8 @@ import IconLive from './icons/IconLive.vue';
                     <p class="text-body-base font-semibold truncate text-left">Valorant</p>
                 </div>
                 <!-- Game Event Count -->
-                <div class="text-sm text-muted font-semibold">20</div>
-            </button>
+                <div class="text-sm text-muted font-semibold">{{ counts?.valo || '' }}</div>
+            </NuxtLink>
         </div>
     </div>
 

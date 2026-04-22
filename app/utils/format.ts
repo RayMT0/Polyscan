@@ -35,3 +35,32 @@ export function formatGameScore(score: string, team: number): string {
   if(team === 2) return scores.split('-')[1] || ' '
   return score;
 }
+
+export function formatEventDate(dateStr: string): string {
+  const date = new Date(dateStr)
+  const now = new Date()
+
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const startOfTomorrow = new Date(startOfToday)
+  startOfTomorrow.setDate(startOfTomorrow.getDate() + 1)
+  const startOfDayAfter = new Date(startOfTomorrow)
+  startOfDayAfter.setDate(startOfDayAfter.getDate() + 1)
+
+  const timeStr = date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  })
+
+  if (date >= startOfToday && date < startOfTomorrow) {
+    return `Today, ${timeStr}`
+  } else if (date >= startOfTomorrow && date < startOfDayAfter) {
+    return `Tomorrow, ${timeStr}`
+  } else {
+    const dateFormatted = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    })
+    return `${dateFormatted}, ${timeStr}`
+  }
+}

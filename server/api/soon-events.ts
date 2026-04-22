@@ -1,6 +1,7 @@
 import axios from "axios";
 import { buildParams } from "~/utils/format";
 import type { EventResponse, MarketResponse, TeamResponse } from "~/types/event";
+import { fetchSoonEvents } from "../utils/fetchSoonEvents";
 
 
 export default defineEventHandler(async (event) => {
@@ -8,24 +9,7 @@ export default defineEventHandler(async (event) => {
 
     const limit = Number(query.limit) || 10;
 
-    const res = await axios.get(
-        "https://gamma-api.polymarket.com/events",
-        {
-            params: {
-                limit,
-                ascending: true,
-                series_id: [10311, 10310, 10309, 10369],
-                tag_id: 100639,
-                closed: false,
-                active: true,
-                live: true,
-                ended: false,
-                event_date: new Date().toISOString().split("T")[0],
-                order: "startTime"
-            },
-            paramsSerializer: (params) => buildParams(params)
-        }
-    );
+    const res = await fetchSoonEvents(limit);
 
     const data : EventResponse[] = await Promise.all(
         res.data.map(async (event: any) => {
@@ -95,7 +79,7 @@ export default defineEventHandler(async (event) => {
                 startTime: event.startTime,
                 score: event.score,
                 period: event.period,
-                live: event.live,
+                live: false,
                 seriesSlug: event.seriesSlug,
                 market: market || null,
                 teamA,

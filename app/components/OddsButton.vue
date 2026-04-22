@@ -10,7 +10,7 @@ const props = defineProps<{
 <template>
     <button 
         :style="{'--team-color': color || '#ccc'}" 
-        :class="color ? 'bg-(--team-color)' : 'bg-primary'"
+        :class="color ? 'bg-(--team-color)' : 'bg-primary-500'"
         class="flex-1 w-full rounded-md h-10 cursor-pointer hover:opacity-90"
         type="button"
         tabindex="0"
