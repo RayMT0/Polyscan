@@ -1,7 +1,5 @@
 import { EventCounts } from "~/types/event"
-import { 
-    fetchGameEvents, fetchLiveEvents, fetchSoonEvents
-} from "../utils" 
+
 
 export default defineEventHandler(async () =>{
     const [

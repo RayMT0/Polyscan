@@ -1,0 +1,63 @@
+model Playground {
+    id                  String              @id @default(cuid(2))
+    name                String          
+    pnL                 Decimal             @db.Decimal(15,2) @default(0) @map("pnl")
+    winRate             Decimal             @db.Decimal(5,2) @default(0) @map("win_rate")
+    activeValue         Int                 @default(0) @map("active_value")
+    activePredictions   Int                 @default(0) @map("active_predictions")
+    totalPredictions    Int                 @default(0) @map("total_predictions")
+    predictions         Prediction[]
+    createdAt           DateTime            @db.Timestamptz() @default(now()) @map("created_at")
+    updatedAt           DateTime            @db.Timestamptz() @updatedAt @map("updated_at")
+
+    @@map("playground")
+}
+
+model Prediction {
+    id                  String              @id @default(cuid(2))
+    title               String
+    status              PredictionStatus    @default(ACTIVE)
+    resultStatus        PredictionResult    @default(ONGOING) @map("result_status")
+    value               Decimal             @db.Decimal(15,2) @default(0) 
+    resultValue         Decimal             @db.Decimal(15,2) @default(0) @map("result_value")
+    oddsTitle           String              @map("odds_title")
+    odds                Decimal             @db.Decimal(5,2) @default(0)
+    createdAt           DateTime            @db.Timestamptz() @default(now()) @map("created_at")
+    updatedAt           DateTime            @db.Timestamptz() @updatedAt @map("updated_at")
+    //each prediction has exactly 1 event
+    event               Event               @relation(fields: [eventId], references: [id])              
+    eventId             String              @map("event_id")
+    //each prediction has exactly 1 playground
+    playground          Playground          @relation(fields: [playgroundId], references: [id])
+    playgroundId        String              @map("playground_id")
+
+    @@map("prediction")
+}
+
+model Event {
+    id                  String              @id @default(cuid(2))
+    polymarketId        String              @map("polymarket_id")
+    name                String
+    status              EventStatus         @default(ONGOING)
+    //each event can belong/linked to many predictions
+    predictions         Prediction[]
+
+    @@map("event")
+}
+
+enum PredictionStatus {
+    ACTIVE
+    CLOSED
+}
+
+enum PredictionResult {
+    WIN
+    LOSS
+    ONGOING
+}
+
+enum EventStatus {
+    ONGOING
+    RESOLVED
+    CANCELLED
+}

@@ -1,14 +1,17 @@
 import axios from "axios";
 import { buildParams } from "~/utils/format";
 import type { EventResponse, MarketResponse, TeamResponse } from "~/types/event";
+import type { GameQuery } from "~/types/game"
 
 
 export default defineEventHandler(async (event) => {
-    const query = getQuery(event);
+    const query: GameQuery = getQuery(event);
 
     const limit = Number(query.limit) || 10;
+    const live = query.live;
+    const seriesId = query.seriesId;
 
-    const res = await fetchSoonEvents(limit);
+    const res = await fetchGameEvents(live, seriesId, limit)
 
     const data : EventResponse[] = await Promise.all(
         res.data.map(async (event: any) => {
@@ -78,7 +81,7 @@ export default defineEventHandler(async (event) => {
                 startTime: event.startTime,
                 score: event.score,
                 period: event.period,
-                live: false,
+                live: event.live || false,
                 seriesSlug: event.seriesSlug,
                 market: market || null,
                 teamA,

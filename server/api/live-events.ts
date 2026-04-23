@@ -1,6 +1,5 @@
 import axios from "axios";
 import { buildParams } from "~/utils/format";
-import { fetchLiveEvents } from "../utils/fetchLiveEvents";
 import type { EventResponse, MarketResponse, TeamResponse } from "~/types/event";
 
 
