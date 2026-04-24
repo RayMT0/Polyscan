@@ -189,7 +189,9 @@ const cancelCreatePlayground = () => {
       variant="inset"
       collapsible="offcanvas"
       :ui="{
-        container: 'h-full'
+        base: 'relative',
+        container: 'h-full relative',
+        asideBase: 'h-full'
       }"
     >
       <!-- Sidebar Header with Icon and Title -->
