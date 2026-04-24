@@ -66,7 +66,7 @@ const hktype = ref(true);
                         <div v-if="event.live" class="flex font-semibold text-default text-sm gap-1 items-center">
                             <span>Today,</span>
                             <span>Game {{ event.period.split('/')[0] }}</span>
-                            <span class="mx-0.5 inline-block size-1.5 rounded-full bg-white"/>
+                            <span class="mx-0.5 inline-block size-1.5 rounded-full bg-inverted border-none"/>
                             <span>Best of {{ event.period.split('/')[1] }}</span>
                         </div>
                         <div v-else class="flex font-semibold text-default gap-1 items-center">

@@ -19,7 +19,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 </script>
 
 <template>
-    <UHeader>
+    <UHeader class="lg:rounded-2xl lg:max-w-7xl lg:mx-auto lg:top-3 lg:border lg:bg-default/20 ">
         <template #title>
             <div class="flex items-center gap-3">
                 <div class="flex items-center justify-center size-8 rounded-lg bg-primary">
