@@ -177,7 +177,12 @@ const cancelCreatePlayground = () => {
 </script>
 
 <template>
-  <div class="flex flex-1 h-full">
+  <div
+    class="flex flex-1"
+    :class="[
+      'bg-neutral-50 dark:bg-neutral-950'
+    ]"
+  >
     <!-- USidebar with inset variant and offcanvas collapsible -->
     <USidebar
       v-model:open="sidebarOpen"
@@ -187,11 +192,11 @@ const cancelCreatePlayground = () => {
         container: 'h-full',
       }"
     >
-      <!-- Sidebar Header with Logo/Title -->
+      <!-- Sidebar Header with Icon and Title -->
       <template #header>
         <div class="flex items-center gap-2 px-2">
           <UIcon name="i-lucide-target" class="size-6 text-primary flex-shrink-0" />
-          <span class="font-bold text-lg">Playgrounds</span>
+          <span class="font-bold text-lg hidden sm:inline">Playgrounds</span>
         </div>
       </template>
 
@@ -225,9 +230,9 @@ const cancelCreatePlayground = () => {
             >
               <div class="flex items-center gap-2 min-w-0 flex-1">
                 <UIcon name="i-lucide-target" class="size-4 flex-shrink-0" />
-                <span class="text-sm font-medium truncate">{{ playground.name }}</span>
+                <span class="text-sm font-medium truncate hidden sm:inline">{{ playground.name }}</span>
               </div>
-              <span class="text-xs text-muted flex-shrink-0 whitespace-nowrap">
+              <span class="text-xs text-muted flex-shrink-0 whitespace-nowrap hidden sm:inline">
                 ${{ (playground.currentBalance / 1000).toFixed(0) }}k
               </span>
             </button>
@@ -235,40 +240,44 @@ const cancelCreatePlayground = () => {
         </div>
       </template>
 
-      <!-- Sidebar Footer - Optional -->
+      <!-- Sidebar Footer -->
       <template #footer>
-        <div class="border-t border-border pt-4">
-          <p class="text-xs text-muted px-2">Playgrounds: {{ playgrounds.length }}</p>
+        <div class="border-t border-border pt-3 px-2">
+          <p class="text-xs text-muted">{{ playgrounds.length }} playground{{ playgrounds.length !== 1 ? 's' : '' }}</p>
         </div>
       </template>
     </USidebar>
 
-    <!-- Main Content Area with inset styling -->
-    <div class="flex-1 overflow-hidden flex flex-col bg-default">
-      <!-- Top Bar with Sidebar Toggle -->
-      <div class="h-14 shrink-0 flex items-center gap-3 px-6 border-b border-border">
+    <!-- Main Content Area -->
+    <div
+      class="flex-1 flex flex-col overflow-hidden lg:peer-data-[variant=floating]:my-4 peer-data-[variant=inset]:m-4 lg:peer-data-[variant=inset]:not-peer-data-[collapsible=offcanvas]:ms-0 peer-data-[variant=inset]:rounded-xl peer-data-[variant=inset]:shadow-sm peer-data-[variant=inset]:ring peer-data-[variant=inset]:ring-default bg-default"
+    >
+      <!-- Header Bar with Toggle Button -->
+      <div
+        class="h-(--ui-header-height) shrink-0 flex items-center px-4 gap-3 border-b border-border"
+      >
         <UButton
-          @click="sidebarOpen = !sidebarOpen"
           icon="i-lucide-panel-left"
-          color="neutral"
+          color="primary"
           variant="ghost"
           size="sm"
           aria-label="Toggle sidebar"
-          class="lg:hidden"
+          @click="sidebarOpen = !sidebarOpen"
         />
-        <div class="flex-1 hidden lg:block" />
+        <div class="flex-1" />
       </div>
 
-      <!-- Create Playground View -->
-      <div v-if="isCreatingPlayground" class="flex-1 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-full py-12 px-4">
+      <!-- Content Scroll Area -->
+      <div class="flex-1 overflow-y-auto">
+        <!-- Create Playground View -->
+        <div v-if="isCreatingPlayground" class="flex items-center justify-center min-h-full p-4">
           <UCard class="w-full max-w-md">
             <template #header>
               <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold">Create New Playground</h2>
                 <UButton
                   @click="cancelCreatePlayground"
-                  color="gray"
+                  color="primary"
                   variant="ghost"
                   size="sm"
                   icon="i-lucide-x"
@@ -308,7 +317,7 @@ const cancelCreatePlayground = () => {
               <div class="flex gap-3 justify-end">
                 <UButton
                   @click="cancelCreatePlayground"
-                  color="gray"
+                  color="primary"
                   variant="soft"
                 >
                   Cancel
@@ -324,11 +333,9 @@ const cancelCreatePlayground = () => {
             </template>
           </UCard>
         </div>
-      </div>
 
-      <!-- Empty State -->
-      <div v-else-if="!selectedPlayground" class="flex-1 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-full">
+        <!-- Empty State -->
+        <div v-else-if="!selectedPlayground" class="flex items-center justify-center min-h-full">
           <div class="text-center">
             <div class="mb-4">
               <UIcon name="i-lucide-inbox" class="size-16 text-muted mx-auto" />
@@ -345,11 +352,9 @@ const cancelCreatePlayground = () => {
             </UButton>
           </div>
         </div>
-      </div>
 
-      <!-- Playground Dashboard View -->
-      <div v-else class="flex-1 overflow-y-auto">
-        <div class="p-6 lg:p-8">
+        <!-- Playground Dashboard View -->
+        <div v-else class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
           <!-- Header Section -->
           <div class="mb-8">
             <div class="flex items-start justify-between gap-4 mb-2">
@@ -359,12 +364,12 @@ const cancelCreatePlayground = () => {
               </div>
               <UButton
                 @click="isCreatingPlayground = true"
-                color="gray"
-                variant="ghost"
+                color="primary"
+                variant="soft"
                 size="sm"
                 icon="i-lucide-plus"
               >
-                New Playground
+                New
               </UButton>
             </div>
           </div>
@@ -438,7 +443,7 @@ const cancelCreatePlayground = () => {
                 <div class="flex gap-2 ml-auto">
                   <UButton
                     @click="activeTab = 'active'"
-                    :color="activeTab === 'active' ? 'primary' : 'gray'"
+                    :color="activeTab === 'active' ? 'primary' : 'primary'"
                     :variant="activeTab === 'active' ? 'solid' : 'ghost'"
                     size="sm"
                   >
@@ -446,7 +451,7 @@ const cancelCreatePlayground = () => {
                   </UButton>
                   <UButton
                     @click="activeTab = 'closed'"
-                    :color="activeTab === 'closed' ? 'primary' : 'gray'"
+                    :color="activeTab === 'closed' ? 'primary' : 'primary'"
                     :variant="activeTab === 'closed' ? 'solid' : 'ghost'"
                     size="sm"
                   >
@@ -507,6 +512,7 @@ const cancelCreatePlayground = () => {
           </UCard>
         </div>
       </div>
+      <!-- End Content Scroll Area -->
     </div>
   </div>
 </template>
