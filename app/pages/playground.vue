@@ -178,7 +178,7 @@ const cancelCreatePlayground = () => {
 
 <template>
   <div
-    class="flex flex-1"
+    class="flex flex-1 pt-3"
     :class="[
       'bg-neutral-50 dark:bg-neutral-950'
     ]"
@@ -254,7 +254,7 @@ const cancelCreatePlayground = () => {
     >
       <!-- Header Bar with Toggle Button -->
       <div
-        class="h-(--ui-header-height) shrink-0 flex items-center px-4 gap-3 border-b border-border mt-4"
+        class="h-(--ui-header-height) shrink-0 flex items-center px-4 gap-3 border-b border-border"
       >
         <UButton
           icon="i-lucide-panel-left"
