@@ -83,24 +83,16 @@ const activeTab = ref<'active' | 'closed'>('active');
 const isCreatingPlayground = ref(false);
 const sidebarOpen = ref(true);
 
-// Playground navigation items
-const playgroundItems = computed(() => {
-  return playgrounds.value.map(playground => ({
-    label: playground.name,
-    icon: 'i-lucide-target',
-    badge: `$${(playground.currentBalance / 1000).toFixed(0)}k`,
-    click: () => {
-      selectedPlaygroundId.value = playground.id;
-      isCreatingPlayground.value = false;
-    },
-    active: selectedPlaygroundId.value === playground.id && !isCreatingPlayground.value,
-  }));
-});
-
 const newPlaygroundForm = reactive({
   name: '',
   balance: 1000,
 });
+
+// Helper to select playground
+const selectPlayground = (playgroundId: string) => {
+  selectedPlaygroundId.value = playgroundId;
+  isCreatingPlayground.value = false;
+};
 
 const selectedPlayground = computed(() => {
   if (!selectedPlaygroundId.value) return null;
@@ -172,8 +164,8 @@ const getPredictionStatusLabel = (status: string, result?: string) => {
 };
 
 const getPnlColor = (pnl: number) => {
-  if (pnl > 0) return 'text-green-500';
-  if (pnl < 0) return 'text-red-500';
+  if (pnl > 0) return 'text-emerald-600 dark:text-emerald-400';
+  if (pnl < 0) return 'text-red-600 dark:text-red-400';
   return 'text-muted';
 };
 
@@ -205,29 +197,41 @@ const cancelCreatePlayground = () => {
 
       <!-- Sidebar Content - Playground List -->
       <template #default>
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-2">
           <!-- New Playground Button -->
-          <div class="px-2">
-            <UButton
-              @click="isCreatingPlayground = true"
-              color="primary"
-              variant="soft"
-              block
-              icon="i-lucide-plus"
-              label="New Playground"
-              size="sm"
-            />
-          </div>
-
-          <!-- Playgrounds Navigation -->
-          <UNavigationMenu
-            :items="playgroundItems"
-            orientation="vertical"
-            :ui="{
-              link: 'p-2.5 overflow-hidden',
-              base: 'group relative inline-flex items-center justify-start w-full text-left'
-            }"
+          <UButton
+            @click="isCreatingPlayground = true"
+            color="primary"
+            variant="soft"
+            block
+            icon="i-lucide-plus"
+            label="New Playground"
+            size="sm"
+            class="mx-2 mt-1"
           />
+
+          <!-- Playgrounds List -->
+          <nav class="space-y-1 px-2">
+            <button
+              v-for="playground in playgrounds"
+              :key="playground.id"
+              @click="selectPlayground(playground.id)"
+              :class="[
+                'w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-md transition-colors duration-200',
+                selectedPlaygroundId === playground.id && !isCreatingPlayground
+                  ? 'bg-primary/10 text-primary hover:bg-primary/15'
+                  : 'text-default hover:bg-muted/60 active:bg-muted'
+              ]"
+            >
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <UIcon name="i-lucide-target" class="size-4 flex-shrink-0" />
+                <span class="text-sm font-medium truncate">{{ playground.name }}</span>
+              </div>
+              <span class="text-xs text-muted flex-shrink-0 whitespace-nowrap">
+                ${{ (playground.currentBalance / 1000).toFixed(0) }}k
+              </span>
+            </button>
+          </nav>
         </div>
       </template>
 
@@ -380,13 +384,13 @@ const cancelCreatePlayground = () => {
             </UCard>
 
             <!-- P&L Card -->
-            <UCard>
+            <UCard :ui="{ body: { padding: 'p-4 sm:p-5' } }">
               <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-medium text-muted">P&L</p>
                   <UIcon 
                     :name="stats!.pnl >= 0 ? 'i-lucide-trending-up' : 'i-lucide-trending-down'" 
-                    :class="['size-5', stats!.pnl >= 0 ? 'text-green-500' : 'text-red-500']"
+                    :class="['size-5', stats!.pnl >= 0 ? 'text-emerald-500 dark:text-emerald-400' : 'text-red-500 dark:text-red-400']"
                   />
                 </div>
                 <div class="flex items-baseline gap-2">
