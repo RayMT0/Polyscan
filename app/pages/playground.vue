@@ -83,6 +83,20 @@ const activeTab = ref<'active' | 'closed'>('active');
 const isCreatingPlayground = ref(false);
 const sidebarOpen = ref(true);
 
+// Playground navigation items
+const playgroundItems = computed(() => {
+  return playgrounds.value.map(playground => ({
+    label: playground.name,
+    icon: 'i-lucide-target',
+    badge: `$${(playground.currentBalance / 1000).toFixed(0)}k`,
+    click: () => {
+      selectedPlaygroundId.value = playground.id;
+      isCreatingPlayground.value = false;
+    },
+    active: selectedPlaygroundId.value === playground.id && !isCreatingPlayground.value,
+  }));
+});
+
 const newPlaygroundForm = reactive({
   name: '',
   balance: 1000,
@@ -171,70 +185,76 @@ const cancelCreatePlayground = () => {
 </script>
 
 <template>
-  <div class="flex gap-4 h-full lg:gap-6">
-    <!-- Sidebar -->
-    <div 
-      :class="[
-        'flex flex-col gap-4 transition-all duration-300 border-r border-border',
-        sidebarOpen 
-          ? 'w-64 lg:w-80' 
-          : 'w-0 lg:w-16 overflow-hidden lg:overflow-visible'
-      ]"
+  <div class="flex flex-1 h-full">
+    <!-- USidebar with inset variant and offcanvas collapsible -->
+    <USidebar
+      v-model:open="sidebarOpen"
+      variant="inset"
+      collapsible="offcanvas"
+      :ui="{
+        container: 'h-full',
+      }"
     >
-      <!-- Sidebar Header with Toggle -->
-      <div class="flex items-center justify-between px-4 pt-4 lg:pt-0">
-        <h2 v-if="sidebarOpen" class="font-bold text-lg hidden lg:block">Playgrounds</h2>
+      <!-- Sidebar Header with Logo/Title -->
+      <template #header>
+        <div class="flex items-center gap-2 px-2">
+          <UIcon name="i-lucide-target" class="size-6 text-primary flex-shrink-0" />
+          <span class="font-bold text-lg">Playgrounds</span>
+        </div>
+      </template>
+
+      <!-- Sidebar Content - Playground List -->
+      <template #default>
+        <div class="flex flex-col gap-3">
+          <!-- New Playground Button -->
+          <div class="px-2">
+            <UButton
+              @click="isCreatingPlayground = true"
+              color="primary"
+              variant="soft"
+              block
+              icon="i-lucide-plus"
+              label="New Playground"
+              size="sm"
+            />
+          </div>
+
+          <!-- Playgrounds Navigation -->
+          <UNavigationMenu
+            :items="playgroundItems"
+            orientation="vertical"
+            :ui="{
+              link: 'p-2.5 overflow-hidden',
+              base: 'group relative inline-flex items-center justify-start w-full text-left'
+            }"
+          />
+        </div>
+      </template>
+
+      <!-- Sidebar Footer - Optional -->
+      <template #footer>
+        <div class="border-t border-border pt-4">
+          <p class="text-xs text-muted px-2">Playgrounds: {{ playgrounds.length }}</p>
+        </div>
+      </template>
+    </USidebar>
+
+    <!-- Main Content Area with inset styling -->
+    <div class="flex-1 overflow-hidden flex flex-col bg-default">
+      <!-- Top Bar with Sidebar Toggle -->
+      <div class="h-14 shrink-0 flex items-center gap-3 px-6 border-b border-border">
         <UButton
           @click="sidebarOpen = !sidebarOpen"
-          color="gray"
+          icon="i-lucide-panel-left"
+          color="neutral"
           variant="ghost"
           size="sm"
-          icon="i-lucide-chevron-left"
-          class="hidden lg:flex"
+          aria-label="Toggle sidebar"
+          class="lg:hidden"
         />
+        <div class="flex-1 hidden lg:block" />
       </div>
 
-      <!-- New Playground Button -->
-      <div class="px-4">
-        <UButton
-          @click="isCreatingPlayground = true"
-          color="primary"
-          block
-          icon="i-lucide-plus"
-          :label="sidebarOpen ? 'New Playground' : ''"
-        />
-      </div>
-
-      <!-- Playgrounds List -->
-      <div class="flex-1 overflow-y-auto px-2">
-        <div class="flex flex-col gap-2">
-          <div
-            v-for="playground in playgrounds"
-            :key="playground.id"
-            @click="selectedPlaygroundId = playground.id; isCreatingPlayground = false"
-            :class="[
-              'px-3 py-3 rounded-lg cursor-pointer transition-all duration-200 flex items-center gap-3 lg:flex-col lg:items-start',
-              selectedPlaygroundId === playground.id && !isCreatingPlayground
-                ? 'bg-primary/10 border border-primary/30'
-                : 'hover:bg-muted border border-transparent'
-            ]"
-          >
-            <UIcon name="i-lucide-target" class="size-5 flex-shrink-0 lg:hidden" />
-            <div class="flex-1 hidden lg:flex lg:flex-col lg:gap-1">
-              <p class="font-semibold text-sm line-clamp-1">
-                {{ playground.name }}
-              </p>
-              <p class="text-xs text-muted">
-                ${{ playground.currentBalance.toLocaleString() }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="flex-1 overflow-hidden flex flex-col">
       <!-- Create Playground View -->
       <div v-if="isCreatingPlayground" class="flex-1 overflow-y-auto">
         <div class="flex items-center justify-center min-h-full py-12 px-4">
@@ -325,7 +345,7 @@ const cancelCreatePlayground = () => {
 
       <!-- Playground Dashboard View -->
       <div v-else class="flex-1 overflow-y-auto">
-        <div class="p-6 lg:p-8 max-w-7xl">
+        <div class="p-6 lg:p-8">
           <!-- Header Section -->
           <div class="mb-8">
             <div class="flex items-start justify-between gap-4 mb-2">
