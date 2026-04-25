@@ -178,7 +178,7 @@ const cancelCreatePlayground = () => {
 
 <template>
   <div
-    class="flex flex-1 pt-3"
+    class="flex flex-1 pt-3 relative"
     :class="[
       'bg-neutral-50 dark:bg-neutral-950'
     ]"
@@ -189,9 +189,8 @@ const cancelCreatePlayground = () => {
       variant="inset"
       collapsible="offcanvas"
       :ui="{
-        base: 'relative',
-        container: 'h-full relative',
-        asideBase: 'h-full'
+        asideBase: 'h-full bg-default',
+        asideScroll: 'h-full'
       }"
     >
       <!-- Sidebar Header with Icon and Title -->
