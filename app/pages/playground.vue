@@ -2,6 +2,10 @@
 import type { Playground, Prediction } from '~/types/playground';
 import { formatEventDate } from '~/utils/format';
 
+definePageMeta({
+  layout: 'playgrounds',
+})
+
 // Mock data
 const playgrounds = ref<Playground[]>([
   {
@@ -25,6 +29,7 @@ const playgrounds = ref<Playground[]>([
     currentBalance: 21200,
     lastUpdated: new Date('2025-04-22'),
   },
+  
 ]);
 
 const mockPredictions: Prediction[] = [
@@ -67,6 +72,26 @@ const mockPredictions: Prediction[] = [
   },
   {
     id: '5',
+    playgroundId: '1',
+    eventName: 'Sentinels vs FaZe - VCT Masters',
+    side: 'Sentinels',
+    amount: 400,
+    potentialWinnings: 640,
+    status: 'closed',
+    result: 'loss',
+  },
+  {
+    id: '6',
+    playgroundId: '1',
+    eventName: 'Sentinels vs FaZe - VCT Masters',
+    side: 'Sentinels',
+    amount: 400,
+    potentialWinnings: 640,
+    status: 'closed',
+    result: 'loss',
+  },
+  {
+    id: '7',
     playgroundId: '1',
     eventName: 'Sentinels vs FaZe - VCT Masters',
     side: 'Sentinels',
@@ -150,10 +175,10 @@ const createPlayground = () => {
 };
 
 const getPredictionStatusColor = (status: string, result?: string) => {
-  if (status === 'active') return 'primary';
-  if (result === 'win') return 'green';
-  if (result === 'loss') return 'red';
-  return 'gray';
+  if (status === 'active') return 'secondary';
+  if (result === 'win') return 'primary';
+  if (result === 'loss') return 'error';
+  return 'neutral';
 };
 
 const getPredictionStatusLabel = (status: string, result?: string) => {
@@ -178,7 +203,7 @@ const cancelCreatePlayground = () => {
 
 <template>
   <div
-    class="flex flex-1 pt-3"
+    class="flex flex-1 overflow-hidden mt-3 relative rounded-xl"
     :class="[
       'bg-neutral-50 dark:bg-neutral-950'
     ]"
@@ -188,16 +213,15 @@ const cancelCreatePlayground = () => {
       v-model:open="sidebarOpen"
       variant="inset"
       collapsible="offcanvas"
+      class=""
       :ui="{
-        base: 'relative',
-        container: 'h-full relative',
-        asideBase: 'h-full'
+        container: 'h-full z-0 absolute',
       }"
     >
       <!-- Sidebar Header with Icon and Title -->
       <template #header>
         <div class="flex items-center gap-2 px-2">
-          <UIcon name="i-lucide-target" class="size-6 text-primary flex-shrink-0" />
+          <UIcon name="i-lucide-target" class="size-6 text-primary shrink-0" />
           <span class="font-bold text-lg hidden sm:inline">Playgrounds</span>
         </div>
       </template>
@@ -210,15 +234,14 @@ const cancelCreatePlayground = () => {
             @click="isCreatingPlayground = true"
             color="primary"
             variant="soft"
-            block
             icon="i-lucide-plus"
-            label="New Playground"
+            label="New playground"
             size="sm"
-            class="mx-2 mt-1"
+            class="py-2"
           />
 
           <!-- Playgrounds List -->
-          <nav class="space-y-1 px-2">
+          <nav class="space-y-1">
             <button
               v-for="playground in playgrounds"
               :key="playground.id"
@@ -231,10 +254,10 @@ const cancelCreatePlayground = () => {
               ]"
             >
               <div class="flex items-center gap-2 min-w-0 flex-1">
-                <UIcon name="i-lucide-target" class="size-4 flex-shrink-0" />
+                <UIcon name="i-lucide-target" class="size-4 shrink-0" />
                 <span class="text-sm font-medium truncate hidden sm:inline">{{ playground.name }}</span>
               </div>
-              <span class="text-xs text-muted flex-shrink-0 whitespace-nowrap hidden sm:inline">
+              <span class="text-xs text-muted shrink-0 whitespace-nowrap hidden sm:inline">
                 ${{ (playground.currentBalance / 1000).toFixed(0) }}k
               </span>
             </button>
@@ -256,7 +279,7 @@ const cancelCreatePlayground = () => {
     >
       <!-- Header Bar with Toggle Button -->
       <div
-        class="h-(--ui-header-height) shrink-0 flex items-center px-4 gap-3 border-b border-border"
+        class="h-(--ui-header-height) shrink-0 flex items-center px-4 border-b border-default"
       >
         <UButton
           icon="i-lucide-panel-left"
@@ -266,7 +289,6 @@ const cancelCreatePlayground = () => {
           aria-label="Toggle sidebar"
           @click="sidebarOpen = !sidebarOpen"
         />
-        <div class="flex-1" />
       </div>
 
       <!-- Content Scroll Area -->
@@ -337,7 +359,7 @@ const cancelCreatePlayground = () => {
         </div>
 
         <!-- Empty State -->
-        <div v-else-if="!selectedPlayground" class="flex items-center justify-center min-h-full">
+        <div v-else-if="!selectedPlayground" class="flex items-center justify-center min-h-full py-4 sm:py-6 lg:py-8">
           <div class="text-center">
             <div class="mb-4">
               <UIcon name="i-lucide-inbox" class="size-16 text-muted mx-auto" />
@@ -391,7 +413,7 @@ const cancelCreatePlayground = () => {
             </UCard>
 
             <!-- P&L Card -->
-            <UCard :ui="{ body: { padding: 'p-4 sm:p-5' } }">
+            <UCard>
               <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-medium text-muted">P&L</p>
@@ -469,7 +491,7 @@ const cancelCreatePlayground = () => {
               <p class="text-muted">No {{ activeTab === 'active' ? 'active' : 'closed' }} predictions yet</p>
             </div>
 
-            <div v-else class="overflow-x-auto">
+            <div v-else class="overflow-x-auto overflow-y-scroll">
               <table class="w-full text-sm">
                 <thead>
                   <tr class="border-t border-border">

@@ -19,10 +19,14 @@ const items = computed<NavigationMenuItem[]>(() => [
 </script>
 
 <template>
-    <UHeader class="lg:rounded-2xl lg:max-w-7xl lg:mx-auto lg:top-3 lg:border lg:bg-default/20 ">
+    <UHeader class="xl:rounded-2xl xl:max-w-7xl xl:mx-auto xl:top-3 xl:border xl:bg-default/20 w-full min-h-(--ui-header-height)"
+        :ui="{
+            container: 'lg:px-6'
+        }"
+    >
         <template #title>
             <div class="flex items-center gap-3">
-                <div class="flex items-center justify-center size-8 rounded-lg bg-primary">
+                <div class="flex items-center justify-center size-8 rounded-xl bg-primary">
                     <UIcon name="i-lucide-gamepad-2" class="size-5 text-inverted" />
                 </div>
                 <div>

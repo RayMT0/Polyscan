@@ -13,7 +13,7 @@ const { data: events, pending } = await useFetch('/api/live-events', {
 </script>
 
 <template>
-    <div class="relative h-fit flex flex-col max-w-170 w-full md:max-w-none xl:max-w-170 gap-6 lg:pl-8 pt-5">
+    <div class="relative h-fit flex flex-col max-w-170 w-full md:max-w-none xl:max-w-170 gap-6 lg:pl-8 pt-5 pb-8">
         <div class="w-full h-full">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-5">
                 <h2 class="text-2xl font-bold text-default">Live Events</h2>

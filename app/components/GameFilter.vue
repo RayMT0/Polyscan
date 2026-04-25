@@ -12,7 +12,7 @@ const { data: counts, pending } = await useFetch<EventCounts>('/api/events-count
 
 <template>
     <div 
-        class="hidden lg:flex w-47.5 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky pt-6"
+        class="hidden lg:flex w-47.5 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky pt-6 gap-1"
         style="top: var(--navbar-height); height: calc(100vh - var(--navbar-height));"
     >
     <!-- Filter Items -->
@@ -49,12 +49,12 @@ const { data: counts, pending } = await useFetch<EventCounts>('/api/events-count
             </div>
             <div class="text-sm text-muted font-semibold">{{ counts?.soon || '' }}</div>
         </NuxtLink>
-        <div class="pb-2 border-b border-muted mb-2 w-full"></div>
-        <div class="flex items-center px-3 mt-4 mb-3">
+        <div class="pb-1 border-b border-muted mb-1 w-full"></div>
+        <div class="flex items-center px-3 mt-3 mb-2">
             <p class="text-[11px] uppercase text-muted font-medium whitespace-nowrap tracking-wider">Games</p>
         </div>
         <!-- Games Filter Items -->
-        <div>
+        <div class="flex flex-col gap-1">
             <!-- Dota2 -->
             <NuxtLink
                 raw
