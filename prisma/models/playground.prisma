@@ -1,7 +1,11 @@
 model Playground {
     id                  String              @id @default(cuid(2))
     name                String          
+    initialBalance      Decimal             @db.Decimal(15,2) @default(0) @map("initial_balance")
+    currentBalance      Decimal             @db.Decimal(15,2) @default(0) @map("current_balance")
     pnL                 Decimal             @db.Decimal(15,2) @default(0) @map("pnl")
+    pnlPerentage        Decimal             @db.Decimal(5,2) @default(0) @map("pnl_percentage")
+    winCount            Int                 @default(0) @map("win_count")
     winRate             Decimal             @db.Decimal(5,2) @default(0) @map("win_rate")
     activeValue         Int                 @default(0) @map("active_value")
     activePredictions   Int                 @default(0) @map("active_predictions")

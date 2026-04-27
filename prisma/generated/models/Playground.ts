@@ -27,7 +27,11 @@ export type AggregatePlayground = {
 }
 
 export type PlaygroundAvgAggregateOutputType = {
+  initialBalance: runtime.Decimal | null
+  currentBalance: runtime.Decimal | null
   pnL: runtime.Decimal | null
+  pnlPerentage: runtime.Decimal | null
+  winCount: number | null
   winRate: runtime.Decimal | null
   activeValue: number | null
   activePredictions: number | null
@@ -35,7 +39,11 @@ export type PlaygroundAvgAggregateOutputType = {
 }
 
 export type PlaygroundSumAggregateOutputType = {
+  initialBalance: runtime.Decimal | null
+  currentBalance: runtime.Decimal | null
   pnL: runtime.Decimal | null
+  pnlPerentage: runtime.Decimal | null
+  winCount: number | null
   winRate: runtime.Decimal | null
   activeValue: number | null
   activePredictions: number | null
@@ -45,7 +53,11 @@ export type PlaygroundSumAggregateOutputType = {
 export type PlaygroundMinAggregateOutputType = {
   id: string | null
   name: string | null
+  initialBalance: runtime.Decimal | null
+  currentBalance: runtime.Decimal | null
   pnL: runtime.Decimal | null
+  pnlPerentage: runtime.Decimal | null
+  winCount: number | null
   winRate: runtime.Decimal | null
   activeValue: number | null
   activePredictions: number | null
@@ -57,7 +69,11 @@ export type PlaygroundMinAggregateOutputType = {
 export type PlaygroundMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  initialBalance: runtime.Decimal | null
+  currentBalance: runtime.Decimal | null
   pnL: runtime.Decimal | null
+  pnlPerentage: runtime.Decimal | null
+  winCount: number | null
   winRate: runtime.Decimal | null
   activeValue: number | null
   activePredictions: number | null
@@ -69,7 +85,11 @@ export type PlaygroundMaxAggregateOutputType = {
 export type PlaygroundCountAggregateOutputType = {
   id: number
   name: number
+  initialBalance: number
+  currentBalance: number
   pnL: number
+  pnlPerentage: number
+  winCount: number
   winRate: number
   activeValue: number
   activePredictions: number
@@ -81,7 +101,11 @@ export type PlaygroundCountAggregateOutputType = {
 
 
 export type PlaygroundAvgAggregateInputType = {
+  initialBalance?: true
+  currentBalance?: true
   pnL?: true
+  pnlPerentage?: true
+  winCount?: true
   winRate?: true
   activeValue?: true
   activePredictions?: true
@@ -89,7 +113,11 @@ export type PlaygroundAvgAggregateInputType = {
 }
 
 export type PlaygroundSumAggregateInputType = {
+  initialBalance?: true
+  currentBalance?: true
   pnL?: true
+  pnlPerentage?: true
+  winCount?: true
   winRate?: true
   activeValue?: true
   activePredictions?: true
@@ -99,7 +127,11 @@ export type PlaygroundSumAggregateInputType = {
 export type PlaygroundMinAggregateInputType = {
   id?: true
   name?: true
+  initialBalance?: true
+  currentBalance?: true
   pnL?: true
+  pnlPerentage?: true
+  winCount?: true
   winRate?: true
   activeValue?: true
   activePredictions?: true
@@ -111,7 +143,11 @@ export type PlaygroundMinAggregateInputType = {
 export type PlaygroundMaxAggregateInputType = {
   id?: true
   name?: true
+  initialBalance?: true
+  currentBalance?: true
   pnL?: true
+  pnlPerentage?: true
+  winCount?: true
   winRate?: true
   activeValue?: true
   activePredictions?: true
@@ -123,7 +159,11 @@ export type PlaygroundMaxAggregateInputType = {
 export type PlaygroundCountAggregateInputType = {
   id?: true
   name?: true
+  initialBalance?: true
+  currentBalance?: true
   pnL?: true
+  pnlPerentage?: true
+  winCount?: true
   winRate?: true
   activeValue?: true
   activePredictions?: true
@@ -222,7 +262,11 @@ export type PlaygroundGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type PlaygroundGroupByOutputType = {
   id: string
   name: string
+  initialBalance: runtime.Decimal
+  currentBalance: runtime.Decimal
   pnL: runtime.Decimal
+  pnlPerentage: runtime.Decimal
+  winCount: number
   winRate: runtime.Decimal
   activeValue: number
   activePredictions: number
@@ -257,7 +301,11 @@ export type PlaygroundWhereInput = {
   NOT?: Prisma.PlaygroundWhereInput | Prisma.PlaygroundWhereInput[]
   id?: Prisma.StringFilter<"Playground"> | string
   name?: Prisma.StringFilter<"Playground"> | string
+  initialBalance?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFilter<"Playground"> | number
   winRate?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFilter<"Playground"> | number
   activePredictions?: Prisma.IntFilter<"Playground"> | number
@@ -270,7 +318,11 @@ export type PlaygroundWhereInput = {
 export type PlaygroundOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -286,7 +338,11 @@ export type PlaygroundWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PlaygroundWhereInput[]
   NOT?: Prisma.PlaygroundWhereInput | Prisma.PlaygroundWhereInput[]
   name?: Prisma.StringFilter<"Playground"> | string
+  initialBalance?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFilter<"Playground"> | number
   winRate?: Prisma.DecimalFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFilter<"Playground"> | number
   activePredictions?: Prisma.IntFilter<"Playground"> | number
@@ -299,7 +355,11 @@ export type PlaygroundWhereUniqueInput = Prisma.AtLeast<{
 export type PlaygroundOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -319,7 +379,11 @@ export type PlaygroundScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PlaygroundScalarWhereWithAggregatesInput | Prisma.PlaygroundScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Playground"> | string
   name?: Prisma.StringWithAggregatesFilter<"Playground"> | string
+  initialBalance?: Prisma.DecimalWithAggregatesFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalWithAggregatesFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalWithAggregatesFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalWithAggregatesFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntWithAggregatesFilter<"Playground"> | number
   winRate?: Prisma.DecimalWithAggregatesFilter<"Playground"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntWithAggregatesFilter<"Playground"> | number
   activePredictions?: Prisma.IntWithAggregatesFilter<"Playground"> | number
@@ -331,7 +395,11 @@ export type PlaygroundScalarWhereWithAggregatesInput = {
 export type PlaygroundCreateInput = {
   id?: string
   name: string
+  initialBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: number
   winRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: number
   activePredictions?: number
@@ -344,7 +412,11 @@ export type PlaygroundCreateInput = {
 export type PlaygroundUncheckedCreateInput = {
   id?: string
   name: string
+  initialBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: number
   winRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: number
   activePredictions?: number
@@ -357,7 +429,11 @@ export type PlaygroundUncheckedCreateInput = {
 export type PlaygroundUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  initialBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFieldUpdateOperationsInput | number
   winRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFieldUpdateOperationsInput | number
   activePredictions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -370,7 +446,11 @@ export type PlaygroundUpdateInput = {
 export type PlaygroundUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  initialBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFieldUpdateOperationsInput | number
   winRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFieldUpdateOperationsInput | number
   activePredictions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -383,7 +463,11 @@ export type PlaygroundUncheckedUpdateInput = {
 export type PlaygroundCreateManyInput = {
   id?: string
   name: string
+  initialBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: number
   winRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: number
   activePredictions?: number
@@ -395,7 +479,11 @@ export type PlaygroundCreateManyInput = {
 export type PlaygroundUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  initialBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFieldUpdateOperationsInput | number
   winRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFieldUpdateOperationsInput | number
   activePredictions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -407,7 +495,11 @@ export type PlaygroundUpdateManyMutationInput = {
 export type PlaygroundUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  initialBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFieldUpdateOperationsInput | number
   winRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFieldUpdateOperationsInput | number
   activePredictions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -419,7 +511,11 @@ export type PlaygroundUncheckedUpdateManyInput = {
 export type PlaygroundCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -429,7 +525,11 @@ export type PlaygroundCountOrderByAggregateInput = {
 }
 
 export type PlaygroundAvgOrderByAggregateInput = {
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -439,7 +539,11 @@ export type PlaygroundAvgOrderByAggregateInput = {
 export type PlaygroundMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -451,7 +555,11 @@ export type PlaygroundMaxOrderByAggregateInput = {
 export type PlaygroundMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -461,7 +569,11 @@ export type PlaygroundMinOrderByAggregateInput = {
 }
 
 export type PlaygroundSumOrderByAggregateInput = {
+  initialBalance?: Prisma.SortOrder
+  currentBalance?: Prisma.SortOrder
   pnL?: Prisma.SortOrder
+  pnlPerentage?: Prisma.SortOrder
+  winCount?: Prisma.SortOrder
   winRate?: Prisma.SortOrder
   activeValue?: Prisma.SortOrder
   activePredictions?: Prisma.SortOrder
@@ -514,7 +626,11 @@ export type PlaygroundUpdateOneRequiredWithoutPredictionsNestedInput = {
 export type PlaygroundCreateWithoutPredictionsInput = {
   id?: string
   name: string
+  initialBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: number
   winRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: number
   activePredictions?: number
@@ -526,7 +642,11 @@ export type PlaygroundCreateWithoutPredictionsInput = {
 export type PlaygroundUncheckedCreateWithoutPredictionsInput = {
   id?: string
   name: string
+  initialBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: number
   winRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: number
   activePredictions?: number
@@ -554,7 +674,11 @@ export type PlaygroundUpdateToOneWithWhereWithoutPredictionsInput = {
 export type PlaygroundUpdateWithoutPredictionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  initialBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFieldUpdateOperationsInput | number
   winRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFieldUpdateOperationsInput | number
   activePredictions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -566,7 +690,11 @@ export type PlaygroundUpdateWithoutPredictionsInput = {
 export type PlaygroundUncheckedUpdateWithoutPredictionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  initialBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pnL?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pnlPerentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  winCount?: Prisma.IntFieldUpdateOperationsInput | number
   winRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   activeValue?: Prisma.IntFieldUpdateOperationsInput | number
   activePredictions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -609,7 +737,11 @@ export type PlaygroundCountOutputTypeCountPredictionsArgs<ExtArgs extends runtim
 export type PlaygroundSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  initialBalance?: boolean
+  currentBalance?: boolean
   pnL?: boolean
+  pnlPerentage?: boolean
+  winCount?: boolean
   winRate?: boolean
   activeValue?: boolean
   activePredictions?: boolean
@@ -623,7 +755,11 @@ export type PlaygroundSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type PlaygroundSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  initialBalance?: boolean
+  currentBalance?: boolean
   pnL?: boolean
+  pnlPerentage?: boolean
+  winCount?: boolean
   winRate?: boolean
   activeValue?: boolean
   activePredictions?: boolean
@@ -635,7 +771,11 @@ export type PlaygroundSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type PlaygroundSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  initialBalance?: boolean
+  currentBalance?: boolean
   pnL?: boolean
+  pnlPerentage?: boolean
+  winCount?: boolean
   winRate?: boolean
   activeValue?: boolean
   activePredictions?: boolean
@@ -647,7 +787,11 @@ export type PlaygroundSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type PlaygroundSelectScalar = {
   id?: boolean
   name?: boolean
+  initialBalance?: boolean
+  currentBalance?: boolean
   pnL?: boolean
+  pnlPerentage?: boolean
+  winCount?: boolean
   winRate?: boolean
   activeValue?: boolean
   activePredictions?: boolean
@@ -656,7 +800,7 @@ export type PlaygroundSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PlaygroundOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "pnL" | "winRate" | "activeValue" | "activePredictions" | "totalPredictions" | "createdAt" | "updatedAt", ExtArgs["result"]["playground"]>
+export type PlaygroundOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "initialBalance" | "currentBalance" | "pnL" | "pnlPerentage" | "winCount" | "winRate" | "activeValue" | "activePredictions" | "totalPredictions" | "createdAt" | "updatedAt", ExtArgs["result"]["playground"]>
 export type PlaygroundInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   predictions?: boolean | Prisma.Playground$predictionsArgs<ExtArgs>
   _count?: boolean | Prisma.PlaygroundCountOutputTypeDefaultArgs<ExtArgs>
@@ -672,7 +816,11 @@ export type $PlaygroundPayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    initialBalance: runtime.Decimal
+    currentBalance: runtime.Decimal
     pnL: runtime.Decimal
+    pnlPerentage: runtime.Decimal
+    winCount: number
     winRate: runtime.Decimal
     activeValue: number
     activePredictions: number
@@ -1105,7 +1253,11 @@ export interface Prisma__PlaygroundClient<T, Null = never, ExtArgs extends runti
 export interface PlaygroundFieldRefs {
   readonly id: Prisma.FieldRef<"Playground", 'String'>
   readonly name: Prisma.FieldRef<"Playground", 'String'>
+  readonly initialBalance: Prisma.FieldRef<"Playground", 'Decimal'>
+  readonly currentBalance: Prisma.FieldRef<"Playground", 'Decimal'>
   readonly pnL: Prisma.FieldRef<"Playground", 'Decimal'>
+  readonly pnlPerentage: Prisma.FieldRef<"Playground", 'Decimal'>
+  readonly winCount: Prisma.FieldRef<"Playground", 'Int'>
   readonly winRate: Prisma.FieldRef<"Playground", 'Decimal'>
   readonly activeValue: Prisma.FieldRef<"Playground", 'Int'>
   readonly activePredictions: Prisma.FieldRef<"Playground", 'Int'>

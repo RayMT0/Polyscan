@@ -7,12 +7,12 @@ const items = computed<NavigationMenuItem[]>(() => [
     {
         label: 'Events',
         to: '/events',
-        active: route.path === '/events',
+        active: route.path.startsWith('/events'),
     },
     {
         label: 'Playground',
-        to: '/playground',
-        active: route.path.startsWith('/playground'),
+        to: '/playgrounds',
+        active: route.path.startsWith('/playgrounds'),
     }
 ])
 

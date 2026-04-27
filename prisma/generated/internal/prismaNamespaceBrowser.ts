@@ -76,7 +76,11 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const PlaygroundScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  initialBalance: 'initialBalance',
+  currentBalance: 'currentBalance',
   pnL: 'pnL',
+  pnlPerentage: 'pnlPerentage',
+  winCount: 'winCount',
   winRate: 'winRate',
   activeValue: 'activeValue',
   activePredictions: 'activePredictions',

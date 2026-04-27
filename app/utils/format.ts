@@ -12,7 +12,7 @@ export function buildParams(paramsObj: Record<string, any>) {
   return searchParams.toString();
 }
 
-export function formatVolume(volume: number): string{
+export function formatMoney(volume: number): string{
   if (volume >= 1_000_000_000) {
     return (volume / 1_000_000_000).toFixed(2) + 'B'
   }

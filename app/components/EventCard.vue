@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Event } from '~/types/event';
-import { formatGameScore, formatVolume } from '~/utils/format';
 
 
 const props = defineProps<{
@@ -76,7 +75,7 @@ const hktype = ref(true);
                     <!-- Game Volume Traded & League -->
                     <div class="max-w-0 min-w-full overflow-hidden">
                         <span class="flex flex-row gap-1 line-clamp-1 whitespace-nowrap! overflow-hidden">
-                            <span class="text-sm text-muted">${{ formatVolume(event.volume) }} Vol.</span>
+                            <span class="text-sm text-muted">${{ formatMoney(event.volume) }} Vol.</span>
                             <span class="text-sm text-toned">
                                 {{ event.eventMetadata.league }} {{ event.eventMetadata.serie }} {{ event.eventMetadata.tournament }}
                             </span>
