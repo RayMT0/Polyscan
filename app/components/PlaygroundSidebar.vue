@@ -132,49 +132,6 @@ const dropdownItems: DropdownMenuItem[][] = [
               </div>
             </template>
           </UNavigationMenu>
-
-          <!-- Manual Sidebar Content + NuxtLink -->
-          <!-- <div class="flex flex-col gap-1.5">
-            <div
-              v-for="item in navItems"
-              :key="item.id"
-              class="group flex items-center gap-2 rounded-md hover:bg-elevated/50 overflow-hidden cursor-pointer"
-            >
-              <ULink
-                :to="item.to"
-                class="flex flex-row items-center w-full px-2.5 py-1.5 gap-1.5 flex-1 min-w-0 font-semibold text-xs/5"
-              >
-                <UIcon :name="item.icon" class="size-4 shrink-0" />
-                <span class="truncate text-sm">{{ item.label }}</span>
-              </ULink>
-
-              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5">
-                <UBadge 
-                  color="neutral"
-                  variant="outline"
-                  size="sm"
-                >
-                {{ item.badge }}
-                </UBadge>
-                <div class="w-0 overflow-hidden group-hover:w-6 has-data-[state=open]:w-6 transition-all duration-200">
-                  <UDropdownMenu
-                    :items="dropdownItems"
-                    :content="{ align: 'start' }"
-                    :modal="false"
-                    size="sm"
-                  >
-                    <UButton 
-                      icon="i-lucide-ellipsis"
-                      color="neutral"
-                      variant="ghost"
-                      size="xs"
-                      class="text-muted hover:text-highlighted hover:bg-accented/50 data-[state=open]:bg-accented/50 mr-1.5"
-                    />
-                  </UDropdownMenu>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
       </template>
 
