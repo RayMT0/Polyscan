@@ -39,22 +39,12 @@ const createPlayground = async () => {
       body: newPlayground
     })
 
-    const route = useRoute()
-
-    if(route.path !== '/playgrounds'){
-      resetCreatePlayground();
-      await navigateTo('/playgrounds')
-    }
     resetCreatePlayground();
-
   } catch (error) {
     console.error('Error creating playground:', error)
   } finally {
     isLoading.value = false
-  }
-  
-  
-  
+  } 
 };
 
 const resetCreatePlayground = () => {

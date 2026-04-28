@@ -15,7 +15,7 @@ const { data: playground, pending, error } = useFetch<Playground>(
     }
 )
 
-const { selectedPlaygroundId, selectPlayground } = usePlaygrounds()
+const { selectedPlaygroundId } = usePlaygrounds()
 
 //UI States
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()

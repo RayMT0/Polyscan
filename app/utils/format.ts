@@ -12,20 +12,22 @@ export function buildParams(paramsObj: Record<string, any>) {
   return searchParams.toString();
 }
 
-export function formatMoney(volume: number): string{
-  if (volume >= 1_000_000_000) {
-    return (volume / 1_000_000_000).toFixed(2) + 'B'
+export function formatMoney(input: number | string): string{
+
+  const money = Number(input)
+  if (money >= 1_000_000_000) {
+    return (money / 1_000_000_000).toFixed(2) + 'B'
   }
 
-  if (volume >= 1_000_000) {
-    return (volume / 1_000_000).toFixed(2) + 'M'
+  if (money >= 1_000_000) {
+    return (money / 1_000_000).toFixed(2) + 'M'
   }
 
-  if (volume >= 1_000) {
-    return (volume / 1_000).toFixed(2) + 'K'
+  if (money >= 1_000) {
+    return (money / 1_000).toFixed(2) + 'K'
   }
 
-  return volume.toFixed(2)
+  return money.toFixed(2)
 }
 
 export function formatGameScore(score: string, team: number): string {

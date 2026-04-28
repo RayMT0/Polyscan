@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import type { DropdownMenuItem } from '@nuxt/ui';
 
 const { playgrounds, selectPlayground } = usePlaygrounds()
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
@@ -15,6 +15,47 @@ const createPlayground = () => {
     }
     isCreatingPlayground.value = true
 }
+
+const navItems = computed(() => {
+  const route = useRoute()
+
+  return playgrounds.value?.map((pg) => {
+    const id = pg.id
+    const label = pg.name + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    const icon = 'i-lucide-target'
+    const badge = `$${formatMoney(pg.initialBalance)}`
+    const to = `/playgrounds/${pg.id}`
+    const active = route.path === `/playgrounds/${pg.id}`
+    return{
+      id,
+      label,
+      icon,
+      badge,
+      to,
+      active
+    }
+  }) || [];
+})
+
+const dropdownItems: DropdownMenuItem[][] = [
+  [
+    {
+      label: 'Rename playground',
+      icon: 'i-lucide-pencil'
+    },
+    {
+      label: 'Pin playground',
+      icon: 'i-lucide-pin'
+    },
+  ],
+  [ 
+    {
+      label: 'Delete playground',
+      icon: 'i-lucide-trash-2',
+      color: 'error'
+    }
+  ]
+]
 
 </script>
 
@@ -52,34 +93,95 @@ const createPlayground = () => {
           />
 
           <!-- Playgrounds List -->
-          <nav class="space-y-1">
-            <button
-              v-for="playground in playgrounds"
-              :key="playground.id"
-              @click="selectPlayground(playground.id)"
-              :class="[
-                'w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-md transition-colors duration-200',
-                selectedPlaygroundId === playground.id && !isCreatingPlayground
-                  ? 'bg-primary/10 text-primary hover:bg-primary/15'
-                  : 'text-default hover:bg-muted/60 active:bg-muted'
-              ]"
-            >
-              <div class="flex items-center gap-2 min-w-0 flex-1">
-                <UIcon name="i-lucide-target" class="size-4 shrink-0" />
-                <span class="text-sm font-medium truncate hidden sm:inline">{{ playground.name }}</span>
+          <!-- NUXT UI VER, CLUNKY DROPDOWN -->
+          <UNavigationMenu
+            :items="navItems"
+            orientation="vertical"
+            color="primary"
+            :ui="{
+              link: 'p-1.5 overflow-hidden has-data-[state=open]:before:bg-elevated/50 has-data-[state=open]:disable',
+            }"
+          >
+            <template #item-trailing="{ item }">
+              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5">
+                <UBadge
+                  color="neutral"
+                  variant="outline"
+                  size="sm"
+                  class=""
+                  >
+                  {{ item.badge }}
+                </UBadge>
+                <div class="w-0 overflow-hidden group-hover:w-6 has-data-[state=open]:w-6 transition-all duration-200">
+                  <UDropdownMenu
+                    :items="dropdownItems"
+                    :content="{ align: 'start' }"
+                    :modal="true"
+                    size="md"
+                    class="items-center"
+                  >
+                    <UButton
+                      icon="i-lucide-ellipsis"
+                      color="neutral"
+                      variant="ghost"
+                      size="xs"
+                      class="text-muted hover:text-highlighted hover:bg-accented/50 data-[state=open]:bg-accented/50 mr-1.5"
+                    />
+                  </UDropdownMenu>
+                </div>
               </div>
-              <span class="text-xs text-muted shrink-0 whitespace-nowrap hidden sm:inline">
-                ${{ formatMoney(Number(playground.initialBalance)) }}
-              </span>
-            </button>
-          </nav>
+            </template>
+          </UNavigationMenu>
+
+          <!-- Manual Sidebar Content + NuxtLink -->
+          <!-- <div class="flex flex-col gap-1.5">
+            <div
+              v-for="item in navItems"
+              :key="item.id"
+              class="group flex items-center gap-2 rounded-md hover:bg-elevated/50 overflow-hidden cursor-pointer"
+            >
+              <ULink
+                :to="item.to"
+                class="flex flex-row items-center w-full px-2.5 py-1.5 gap-1.5 flex-1 min-w-0 font-semibold text-xs/5"
+              >
+                <UIcon :name="item.icon" class="size-4 shrink-0" />
+                <span class="truncate text-sm">{{ item.label }}</span>
+              </ULink>
+
+              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5">
+                <UBadge 
+                  color="neutral"
+                  variant="outline"
+                  size="sm"
+                >
+                {{ item.badge }}
+                </UBadge>
+                <div class="w-0 overflow-hidden group-hover:w-6 has-data-[state=open]:w-6 transition-all duration-200">
+                  <UDropdownMenu
+                    :items="dropdownItems"
+                    :content="{ align: 'start' }"
+                    :modal="false"
+                    size="sm"
+                  >
+                    <UButton 
+                      icon="i-lucide-ellipsis"
+                      color="neutral"
+                      variant="ghost"
+                      size="xs"
+                      class="text-muted hover:text-highlighted hover:bg-accented/50 data-[state=open]:bg-accented/50 mr-1.5"
+                    />
+                  </UDropdownMenu>
+                </div>
+              </div>
+            </div>
+          </div> -->
         </div>
       </template>
 
       <!-- Sidebar Footer -->
       <template #footer>
         <div class="border-t border-border pt-3 px-2">
-          <p class="text-xs text-muted">{{ playgrounds?.length || 0}} playground{{ playgrounds?.length !== 1 ? 's' : '' }}</p>
+          <p class="text-xs text-muted">{{ navItems.length }} playground{{ navItems.length > 1 ? 's' : '' }}</p>
         </div>
       </template>
     </USidebar>
