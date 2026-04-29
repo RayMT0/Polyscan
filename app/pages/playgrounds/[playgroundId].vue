@@ -2,11 +2,14 @@
 import type { Playground, Prediction, PredictionsResultStatus, PredictionsStatus } from '~/types/playground';
 import { PredictionResultStatus, PredictionStatus } from '~/types/playground';
 
+definePageMeta({
+  layout: 'playgrounds',
+})
 
 const route = useRoute()
 
 //Data
-const { data: playground, pending, error } = useFetch<Playground>(
+const { data: playground, pending } = await useFetch<Playground>(
     () => `/api/prisma/playgrounds/${route.params.playgroundId}`,
     {
         key: () => `pg-${route.params.playgroundId}`,
@@ -14,8 +17,6 @@ const { data: playground, pending, error } = useFetch<Playground>(
         watch: [() => route.params.playgroundId]
     }
 )
-
-const { selectedPlaygroundId } = usePlaygrounds()
 
 //UI States
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
@@ -77,9 +78,7 @@ const getPnlColor = (pnl: number) => {
     ]"
   >
     <!-- Playrground Sidebar -->
-    <PlaygroundSidebar 
-      :selected-playground-id="selectedPlaygroundId || ''"
-    />
+    <PlaygroundSidebar />
 
     <!-- Main Content Area with proper inset styling -->
     <div
@@ -107,7 +106,7 @@ const getPnlColor = (pnl: number) => {
           <div class="mb-8">
             <div class="flex items-start justify-between gap-4 mb-2">
               <div>
-                <h1 class="text-3xl lg:text-4xl font-bold">{{ playground?.name }}</h1>
+                <h1 class="text-3xl lg:text-4xl font-bold">{{ pending ? 'loading' : playground?.name }}</h1>
                 <p class="text-muted mt-2">Virtual playground for testing prediction strategies</p>
               </div>
               <UButton

@@ -4,10 +4,6 @@ import type { DropdownMenuItem } from '@nuxt/ui';
 const { playgrounds, selectPlayground } = usePlaygrounds()
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
 
-const props = defineProps<{
-    selectedPlaygroundId: string,
-}>()
-
 const createPlayground = () => {
     const route = useRoute()
     if(route.path !== '/playgrounds'){
@@ -65,18 +61,24 @@ const dropdownItems: DropdownMenuItem[][] = [
       v-model:open="sidebarOpen"
       variant="inset"
       collapsible="offcanvas"
-      class=""
+      title="PLAYGROUND"
+      description="Virtual sandbox for predictions"
+      class="bg-neutral-950 rounded-lg"
       :ui="{
         container: 'h-full z-0 absolute',
+        title: ''
       }"
     >
       <!-- Sidebar Header with Icon and Title -->
-      <template #header>
+      <!-- <template #header>
         <div class="flex items-center gap-2 px-2">
           <UIcon name="i-lucide-target" class="size-6 text-primary shrink-0" />
-          <span class="font-bold text-lg hidden sm:inline">Playgrounds</span>
+          <div class="flex flex-col gap-0 items-start">
+            <span class="font-semibold text-highlighted truncate">Playgrounds</span>
+            <span class="text-muted text-sm truncate">Virtual sandbox for predictions</span>
+          </div>
         </div>
-      </template>
+      </template> -->
 
       <!-- Sidebar Content - Playground List -->
       <template #default>
@@ -92,18 +94,19 @@ const dropdownItems: DropdownMenuItem[][] = [
             class="py-2"
           />
 
+          <span class="text-xs mt-2">Recent</span>
+
           <!-- Playgrounds List -->
-          <!-- NUXT UI VER, CLUNKY DROPDOWN -->
           <UNavigationMenu
             :items="navItems"
             orientation="vertical"
             color="primary"
             :ui="{
-              link: 'p-1.5 overflow-hidden has-data-[state=open]:before:bg-elevated/50 has-data-[state=open]:disable',
+              link: 'p-1.5 overflow-hidden has-data-[state=open]:before:bg-elevated/50',
             }"
           >
             <template #item-trailing="{ item }">
-              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5">
+              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5" @click.prevent>
                 <UBadge
                   color="neutral"
                   variant="outline"
@@ -116,7 +119,7 @@ const dropdownItems: DropdownMenuItem[][] = [
                   <UDropdownMenu
                     :items="dropdownItems"
                     :content="{ align: 'start' }"
-                    :modal="true"
+                    :modal="false"
                     size="md"
                     class="items-center"
                   >
@@ -137,7 +140,7 @@ const dropdownItems: DropdownMenuItem[][] = [
 
       <!-- Sidebar Footer -->
       <template #footer>
-        <div class="border-t border-border pt-3 px-2">
+        <div class="border-t border-accented pt-3 px-2">
           <p class="text-xs text-muted">{{ navItems.length }} playground{{ navItems.length > 1 ? 's' : '' }}</p>
         </div>
       </template>
