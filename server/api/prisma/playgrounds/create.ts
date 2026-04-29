@@ -6,7 +6,8 @@ export default defineEventHandler(async (event) =>{
     const res = await prisma.playground.create({
         data:{
             name: body.name,
-            initialBalance: body.initialBalance
+            initialBalance: body.initialBalance,
+            currentBalance: body.initialBalance,
         }
     })
 

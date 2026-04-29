@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui';
+import type { PlaygroundSidebar } from '~/types/playground';
 
-const { playgrounds, selectPlayground } = usePlaygrounds()
+const props = defineProps<{
+  playgrounds: PlaygroundSidebar[]
+}>()
+
+const { deletePlayground, deletingId } = usePlaygrounds()
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
 
 const createPlayground = () => {
@@ -13,27 +18,30 @@ const createPlayground = () => {
 }
 
 const navItems = computed(() => {
+  if(props.playgrounds.length === 0) return [];
+  
   const route = useRoute()
-
-  return playgrounds.value?.map((pg) => {
+  return props.playgrounds.map((pg) => {
     const id = pg.id
     const label = pg.name + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     const icon = 'i-lucide-target'
     const badge = `$${formatMoney(pg.initialBalance)}`
     const to = `/playgrounds/${pg.id}`
     const active = route.path === `/playgrounds/${pg.id}`
+    const disabled = deletingId.value === pg.id
     return{
       id,
       label,
       icon,
       badge,
       to,
-      active
+      active,
+      disabled
     }
-  }) || [];
+  });
 })
 
-const dropdownItems: DropdownMenuItem[][] = [
+const dropdownItems = (id: string): DropdownMenuItem[][] => [
   [
     {
       label: 'Rename playground',
@@ -48,7 +56,10 @@ const dropdownItems: DropdownMenuItem[][] = [
     {
       label: 'Delete playground',
       icon: 'i-lucide-trash-2',
-      color: 'error'
+      color: 'error',
+      onSelect() {
+        deletePlayground(id)
+      }
     }
   ]
 ]
@@ -66,19 +77,16 @@ const dropdownItems: DropdownMenuItem[][] = [
       class="bg-neutral-950 rounded-lg"
       :ui="{
         container: 'h-full z-0 absolute',
-        title: ''
+        body: 'lg:pt-1!'
       }"
     >
       <!-- Sidebar Header with Icon and Title -->
-      <!-- <template #header>
-        <div class="flex items-center gap-2 px-2">
+      <template #header>
+        <div class="flex items-center gap-2 px-1">
           <UIcon name="i-lucide-target" class="size-6 text-primary shrink-0" />
-          <div class="flex flex-col gap-0 items-start">
-            <span class="font-semibold text-highlighted truncate">Playgrounds</span>
-            <span class="text-muted text-sm truncate">Virtual sandbox for predictions</span>
-          </div>
+          <span class="font-semibold text-highlighted truncate">Playgrounds</span>
         </div>
-      </template> -->
+      </template>
 
       <!-- Sidebar Content - Playground List -->
       <template #default>
@@ -91,10 +99,10 @@ const dropdownItems: DropdownMenuItem[][] = [
             icon="i-lucide-plus"
             label="New playground"
             size="sm"
-            class="py-2"
+            class="py-2.5 cursor-pointer"
           />
 
-          <span class="text-xs mt-2">Recent</span>
+          <span class="text-xs mt-2">Recents</span>
 
           <!-- Playgrounds List -->
           <UNavigationMenu
@@ -102,7 +110,7 @@ const dropdownItems: DropdownMenuItem[][] = [
             orientation="vertical"
             color="primary"
             :ui="{
-              link: 'p-1.5 overflow-hidden has-data-[state=open]:before:bg-elevated/50',
+              link: 'p-1.5 overflow-hidden has-data-[state=open]:before:bg-elevated/50 data-[disabled]:opacity-50 data-[disabled]:pointer-events-none',
             }"
           >
             <template #item-trailing="{ item }">
@@ -117,7 +125,7 @@ const dropdownItems: DropdownMenuItem[][] = [
                 </UBadge>
                 <div class="w-0 overflow-hidden group-hover:w-6 has-data-[state=open]:w-6 transition-all duration-200">
                   <UDropdownMenu
-                    :items="dropdownItems"
+                    :items="dropdownItems(item.id)"
                     :content="{ align: 'start' }"
                     :modal="false"
                     size="md"
@@ -140,7 +148,7 @@ const dropdownItems: DropdownMenuItem[][] = [
 
       <!-- Sidebar Footer -->
       <template #footer>
-        <div class="border-t border-accented pt-3 px-2">
+        <div class="lg:border-t lg:border-accented lg:pt-3 px-2">
           <p class="text-xs text-muted">{{ navItems.length }} playground{{ navItems.length > 1 ? 's' : '' }}</p>
         </div>
       </template>

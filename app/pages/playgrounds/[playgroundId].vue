@@ -6,6 +6,7 @@ definePageMeta({
   layout: 'playgrounds',
 })
 
+const { playgrounds } = usePlaygrounds()
 const route = useRoute()
 
 //Data
@@ -78,7 +79,9 @@ const getPnlColor = (pnl: number) => {
     ]"
   >
     <!-- Playrground Sidebar -->
-    <PlaygroundSidebar />
+    <PlaygroundSidebar 
+      :playgrounds="playgrounds || []"
+    />
 
     <!-- Main Content Area with proper inset styling -->
     <div

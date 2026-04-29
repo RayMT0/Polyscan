@@ -5,8 +5,8 @@ definePageMeta({
   layout: 'playgrounds',
 })
 
-//Real data
-const { playgrounds, pending, selectedPlaygroundId } = usePlaygrounds()
+//Sidebar data
+const { playgrounds } = usePlaygrounds()
 
 // State management
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
@@ -18,8 +18,6 @@ const newPlaygroundForm = reactive({
 });
 
 // Helper to select playground
-
-
 const createPlayground = async () => {
   try {
     isLoading.value = true
@@ -62,8 +60,8 @@ const resetCreatePlayground = () => {
     ]"
   >
     <!-- Playrground Sidebar -->
-    <PlaygroundSidebar 
-      :selected-playground-id="selectedPlaygroundId || ''"
+    <PlaygroundSidebar
+      :playgrounds="playgrounds || []"
     />
 
     <!-- Main Content Area with proper inset styling -->
@@ -153,7 +151,7 @@ const resetCreatePlayground = () => {
         </div>
 
         <!-- Empty State -->
-        <div v-else-if="!selectedPlaygroundId" class="flex items-center justify-center min-h-full py-4 sm:py-6 lg:py-8">
+        <div v-else class="flex items-center justify-center min-h-full py-4 sm:py-6 lg:py-8">
           <div class="text-center">
             <div class="mb-4">
               <UIcon name="i-lucide-inbox" class="size-16 text-muted mx-auto" />

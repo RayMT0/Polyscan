@@ -6,29 +6,33 @@ export const usePlaygrounds = () => {
         key: 'playgrounds',
     })
 
-    const selectedPlaygroundId = useState<string | null>(
-        'selectedPlaygroundId', 
-        () => null
-    )
+    const deletingId = ref<string | null>(null)
+    const deletePlayground = async (id: string) =>{
+        deletingId.value = id;
+        try {
+            const res = await $fetch('/api/prisma/playgrounds/delete', {
+                method: 'DELETE',
+                body: {id: id}
+            })
 
-    const selectPlayground = (id: string) => {
-        selectedPlaygroundId.value = id
-
-        navigateTo(`/playgrounds/${id}`)
+            await refresh();
+        } catch (error) {
+            throw createError({
+                statusCode: 500,
+                statusMessage: 'Failed to delete playground'
+            })
+        } finally {
+            deletingId.value = null;
+        }
     }
 
     return {
         playgrounds: data,
         pending,
         refresh,
-        selectedPlaygroundId,
-        selectPlayground,
+        deletePlayground,
+        deletingId,
     }
-}
-
-// Single playground fetch
-export const usePlaygroundSingle = () => {
-    //Code here
 }
 
 //Playground UI states
