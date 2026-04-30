@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const { deletePlayground, deletingId } = usePlaygrounds()
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
+const { confirm } = useConfirmDialog()
 
 const createPlayground = () => {
     const route = useRoute()
@@ -23,7 +24,7 @@ const navItems = computed(() => {
   const route = useRoute()
   return props.playgrounds.map((pg) => {
     const id = pg.id
-    const label = pg.name + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    const label = pg.name
     const icon = 'i-lucide-target'
     const badge = `$${formatMoney(pg.initialBalance)}`
     const to = `/playgrounds/${pg.id}`
@@ -41,15 +42,17 @@ const navItems = computed(() => {
   });
 })
 
-const dropdownItems = (id: string): DropdownMenuItem[][] => [
+const dropdownItems = (id: string, name: string): DropdownMenuItem[][] => [
   [
     {
       label: 'Rename playground',
-      icon: 'i-lucide-pencil'
+      icon: 'i-lucide-pencil',
+      class: 'cursor-pointer'
     },
     {
       label: 'Pin playground',
-      icon: 'i-lucide-pin'
+      icon: 'i-lucide-pin',
+      class: 'cursor-pointer'
     },
   ],
   [ 
@@ -57,8 +60,21 @@ const dropdownItems = (id: string): DropdownMenuItem[][] => [
       label: 'Delete playground',
       icon: 'i-lucide-trash-2',
       color: 'error',
-      onSelect() {
-        deletePlayground(id)
+      class: 'cursor-pointer',
+      async onSelect() {
+        const ok = await confirm({
+          title: 'Delete playground?',
+          description: 'Playground will be deleted permanently',
+          body: "This will delete",
+          bodyHighlighted: name,
+          confirmLabel: 'Delete',
+          confirmColor: 'error',
+        })
+        
+        console.log(ok)
+        if(!ok) return;
+
+        await deletePlayground(id);
       }
     }
   ]
@@ -74,7 +90,7 @@ const dropdownItems = (id: string): DropdownMenuItem[][] => [
       collapsible="offcanvas"
       title="PLAYGROUND"
       description="Virtual sandbox for predictions"
-      class="bg-neutral-950 rounded-lg"
+      class="rounded-lg"
       :ui="{
         container: 'h-full z-0 absolute',
         body: 'lg:pt-1!'
@@ -114,7 +130,7 @@ const dropdownItems = (id: string): DropdownMenuItem[][] => [
             }"
           >
             <template #item-trailing="{ item }">
-              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5" @click.prevent>
+              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5" @click.prevent @click.stop>
                 <UBadge
                   color="neutral"
                   variant="outline"
@@ -125,7 +141,7 @@ const dropdownItems = (id: string): DropdownMenuItem[][] => [
                 </UBadge>
                 <div class="w-0 overflow-hidden group-hover:w-6 has-data-[state=open]:w-6 transition-all duration-200">
                   <UDropdownMenu
-                    :items="dropdownItems(item.id)"
+                    :items="dropdownItems(item.id, item.label)"
                     :content="{ align: 'start' }"
                     :modal="false"
                     size="md"

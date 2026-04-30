@@ -131,7 +131,9 @@ const getPnlColor = (pnl: number) => {
               <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-medium text-muted">Current Balance</p>
-                  <UIcon name="i-lucide-wallet" class="size-5 text-muted" />
+                  <UIcon name="i-lucide-wallet" class="size-5 text-muted"
+                    color="primary"
+                  />
                 </div>
                 <p class="text-3xl font-bold">${{ formatMoney(Number(playground?.currentBalance) || 0) }}</p>
                 <p class="text-xs text-muted">Started with ${{ formatMoney(Number(playground?.initialBalance) || 0) }}</p>
@@ -143,17 +145,18 @@ const getPnlColor = (pnl: number) => {
               <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-medium text-muted">P&L</p>
-                  <UIcon 
-                    :name="(stats?.pnl || 0) >= 0 ? 'i-lucide-trending-up' : 'i-lucide-trending-down'" 
-                    :class="['size-5',(stats?.pnl || 0) >= 0 ? 'text-primary' : 'text-error']"
+                  <UIcon v-if="(stats?.pnl ?? 0) !== 0"
+                    :name="(stats?.pnl ?? 0) > 0 ? 'i-lucide-trending-up' : 'i-lucide-trending-down'"
+                    :class="['size-5', getPnlColor((stats?.pnl ?? 0))]"
                   />
+                  <span v-if="(stats?.pnl ?? 0) === 0" class="rounded-full size-3 bg-(--ui-text-muted)"></span>
                 </div>
                 <div class="flex items-baseline gap-2">
-                  <p :class="['text-3xl font-bold', getPnlColor(stats?.pnl || 0)]">
-                    {{ (stats?.pnl || 0) >= 0 ? '+' : '' }}${{ stats?.pnl || 0 }}
+                  <p :class="['text-3xl font-bold', getPnlColor(stats?.pnl ?? 0)]">
+                    {{ (stats?.pnl ?? 0) >= 0 ? '+' : '' }}${{ stats?.pnl ?? 0 }}
                   </p>
                   <p :class="['text-sm font-semibold', getPnlColor(stats?.pnl || 0)]">
-                    ({{ (stats?.pnl || 0) >= 0 ? '+' : '' }}{{ stats?.pnlPercent || 0 }}%)
+                    ({{ (stats?.pnl ?? 0) >= 0 ? '+' : '' }}{{ stats?.pnlPercent ?? 0 }}%)
                   </p>
                 </div>
               </div>
@@ -166,7 +169,7 @@ const getPnlColor = (pnl: number) => {
                   <p class="text-sm font-medium text-muted">Win Rate</p>
                   <UIcon name="i-lucide-target" class="size-5 text-muted" />
                 </div>
-                <p class="text-3xl font-bold">{{ stats?.winRate || 0 }}%</p>
+                <p class="text-3xl font-bold">{{ stats?.winRate ?? 0 }}%</p>
                 <p class="text-xs text-muted">Based on closed predictions</p>
               </div>
             </UCard>
@@ -178,8 +181,8 @@ const getPnlColor = (pnl: number) => {
                   <p class="text-sm font-medium text-muted">Active Bets</p>
                   <UIcon name="i-lucide-zap" class="size-5 text-muted" />
                 </div>
-                <p class="text-3xl font-bold">{{ stats?.activePredictions || 'N/A' }}</p>
-                <p class="text-xs text-muted">${{ stats?.activeValue.toLocaleString() || 'N/A' }} at risk</p>
+                <p class="text-3xl font-bold">{{ stats?.activePredictions ?? 'N/A' }}</p>
+                <p class="text-xs text-muted">${{ stats?.activeValue.toLocaleString() ?? 'N/A' }} at risk</p>
               </div>
             </UCard>
           </div>

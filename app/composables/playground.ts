@@ -10,7 +10,7 @@ export const usePlaygrounds = () => {
     const deletePlayground = async (id: string) =>{
         deletingId.value = id;
         try {
-            const res = await $fetch('/api/prisma/playgrounds/delete', {
+            await $fetch('/api/prisma/playgrounds/delete', {
                 method: 'DELETE',
                 body: {id: id}
             })

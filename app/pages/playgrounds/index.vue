@@ -6,7 +6,7 @@ definePageMeta({
 })
 
 //Sidebar data
-const { playgrounds } = usePlaygrounds()
+const { playgrounds, refresh: refreshPG } = usePlaygrounds()
 
 // State management
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
@@ -38,6 +38,7 @@ const createPlayground = async () => {
     })
 
     resetCreatePlayground();
+    await refreshPG();
   } catch (error) {
     console.error('Error creating playground:', error)
   } finally {

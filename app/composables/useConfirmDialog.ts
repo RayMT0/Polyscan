@@ -1,9 +1,11 @@
-import ConfirmDialog from "#components";
+import { ConfirmDialog } from "#components";
 
 export interface ConfirmDialogOptions {
     title: string,
     description?: string,
-    confirmColor?: string,
+    body?: string,
+    bodyHighlighted?: string,
+    confirmColor?: "info" | "error" | "primary" | "success" | "warning",
     confirmLabel?: string,
     cancelLabel?: string,
 }
