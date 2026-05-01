@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Playground, Prediction, PredictionsResultStatus, PredictionsStatus } from '~/types/playground';
 import { PredictionResultStatus, PredictionStatus } from '~/types/playground';
+import { PredictionResult } from '~~/prisma/generated/enums';
 
 definePageMeta({
   layout: 'playgrounds',
@@ -18,6 +19,80 @@ const { data: playground, pending } = await useFetch<Playground>(
         watch: [() => route.params.playgroundId]
     }
 )
+
+//Mock Data
+const mockPredictions: Prediction[] = [
+  {
+    id: '1',
+    playgroundId: '1',
+    title: 'Team A vs Team B - LCS Finals',
+    oddsTitle: 'Team A',
+    odds: 1.5,
+    value: 500,
+    resultValue: 750,
+    status: PredictionStatus.ACTIVE,
+    resultStatus: PredictionResultStatus.ONGOING,
+    eventId: '',
+    createdAt: '',
+    updatedAt: '',
+  },
+  {
+    id: '2',
+    playgroundId: '1',
+    title: 'FaZe vs Natus Vincere - CS2 Pro League',
+    oddsTitle: 'FaZe',
+    odds: 1.9,
+    value: 300,
+    resultValue: 570,
+    status: PredictionStatus.ACTIVE,
+    resultStatus: PredictionResultStatus.ONGOING,
+    eventId: '',
+    createdAt: '',
+    updatedAt: '',
+  },
+  {
+    id: '3',
+    playgroundId: '1',
+    title: 'G2 vs Fnatic - Valorant Champions',
+    oddsTitle: 'G2',
+    odds: 1.6,
+    value: 200,
+    resultValue: 320,
+    status: PredictionStatus.ACTIVE,
+    resultStatus: PredictionResultStatus.ONGOING,
+    eventId: '',
+    createdAt: '',
+    updatedAt: '',
+  },
+  {
+    id: '4',
+    playgroundId: '1',
+    title: 'Team Liquid vs Evil Geniuses - Dota 2',
+    oddsTitle: 'Team Liquid',
+    odds: 1.5,
+    value: 750,
+    resultValue: 1125,
+    status: PredictionStatus.CLOSED,
+    resultStatus: PredictionResultStatus.WIN,
+    eventId: '',
+    createdAt: '',
+    updatedAt: '',
+  },
+  {
+    id: '5',
+    playgroundId: '1',
+    title: 'Sentinels vs FaZe - VCT Masters',
+    oddsTitle: 'Sentinels',
+    odds: 1.6,
+    value: 400,
+    resultValue: 640,
+    status: PredictionStatus.CLOSED,
+    resultStatus: PredictionResultStatus.LOSS,
+    eventId: '',
+    createdAt: '',
+    updatedAt: '',
+  },
+];
 
 //UI States
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
@@ -44,11 +119,17 @@ const stats = computed(() => {
 });
 
 const predictions = computed(() => {
-    if(playground.value?.predictions && playground.value.predictions.length > 0){
-        return playground.value.predictions.filter((p: Prediction) => p.status === activeTab.value)
+    if(mockPredictions.length > 0){
+        return mockPredictions.filter((p: Prediction) => p.status === activeTab.value)
     }
     else return null;
 })
+// const predictions = computed(() => {
+//     if(playground.value?.predictions && playground.value.predictions.length > 0){
+//         return playground.value.predictions.filter((p: Prediction) => p.status === activeTab.value)
+//     }
+//     else return null;
+// })
 
 const getPredictionStatusColor = (status: string, result?: string) => {
   if (status === PredictionStatus.ACTIVE) return 'secondary';
@@ -68,6 +149,11 @@ const getPnlColor = (pnl: number) => {
   if (pnl > 0) return 'text-primary';
   if (pnl < 0) return 'text-error';
   return 'text-muted';
+};
+const getPnlLabelColor = (pnl: number) => {
+  if (pnl > 0) return 'text-primary';
+  if (pnl < 0) return 'text-error';
+  return 'text-highlighted';
 };
 </script>
 
@@ -152,7 +238,7 @@ const getPnlColor = (pnl: number) => {
                   <span v-if="(stats?.pnl ?? 0) === 0" class="rounded-full size-3 bg-(--ui-text-muted)"></span>
                 </div>
                 <div class="flex items-baseline gap-2">
-                  <p :class="['text-3xl font-bold', getPnlColor(stats?.pnl ?? 0)]">
+                  <p :class="['text-3xl font-bold', getPnlLabelColor(stats?.pnl ?? 0)]">
                     {{ (stats?.pnl ?? 0) >= 0 ? '+' : '' }}${{ stats?.pnl ?? 0 }}
                   </p>
                   <p :class="['text-sm font-semibold', getPnlColor(stats?.pnl || 0)]">
@@ -214,45 +300,45 @@ const getPnlColor = (pnl: number) => {
               </div>
             </template>
 
-            <!-- Table or Empty State -->
-            <div v-if="!predictions" class="py-12 px-6 text-center">
+            <!-- Table or Empty State - RAW TABLE VER -->
+            <div v-if="!mockPredictions" class="py-12 px-6 text-center">
               <UIcon name="i-lucide-inbox" class="size-12 text-muted mx-auto mb-3" />
               <p class="text-muted">No {{ activeTab.toLowerCase() }} predictions yet</p>
             </div>
 
-            <div v-else class="overflow-x-auto overflow-y-scroll">
-              <table class="w-full text-sm">
+            <div v-else class="overflow-x-auto">
+              <table class="w-full text-sm table-auto">
                 <thead>
-                  <tr class="border-t border-border">
-                    <th class="text-left py-4 px-6 font-semibold text-muted">Event</th>
-                    <th class="text-left py-4 px-6 font-semibold text-muted">Side</th>
-                    <th class="text-right py-4 px-6 font-semibold text-muted">Bet Amount</th>
-                    <th class="text-right py-4 px-6 font-semibold text-muted">Potential Return</th>
-                    <th class="text-center py-4 px-6 font-semibold text-muted">Status</th>
+                  <tr class="">
+                    <th class="text-left py-4 px-4 font-semibold text-muted">Event</th>
+                    <th class="text-left py-4 px-4 font-semibold text-muted">Side</th>
+                    <th class="text-right py-4 px-4 font-semibold text-muted">{{ activeTab === PredictionStatus.ACTIVE ? 'Potential Return' : 'Return' }}</th>
+                    <th class="text-center py-4 px-4 font-semibold text-muted">{{ activeTab === PredictionStatus.ACTIVE ? 'Status' : 'Result' }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
                     v-for="prediction in predictions"
                     :key="prediction.id"
-                    class="border-t border-border hover:bg-muted/50 transition-colors"
+                    class="odd:bg-muted odd:dark:bg-muted/30  even:bg-default"
                   >
-                    <td class="py-4 px-6">
+                    <td class="py-4 px-4 rounded-l-xl">
                       <p class="font-medium text-default line-clamp-2">{{ prediction.title }}</p>
                     </td>
-                    <td class="py-4 px-6">
-                      <p class="text-default font-medium">{{ prediction.oddsTitle }}</p>
+                    <td class="py-4 px-4">
+                      <p class="text-default font-medium">{{ prediction.oddsTitle }} - {{ prediction.odds }}</p>
                     </td>
-                    <td class="py-4 px-6 text-right">
+                    <td v-if="activeTab === PredictionStatus.ACTIVE" class="py-4 px-4 text-right">
                       <p class="font-semibold text-default">${{ formatMoney(prediction.value) }}</p>
+                      <p class="font-normal text-success">+${{ formatMoney(prediction.odds * prediction.value) }}</p>
                     </td>
-                    <td v-if="activeTab === PredictionStatus.ACTIVE" class="py-4 px-6 text-right">
-                      <p class="font-semibold text-default">${{ formatMoney(prediction.odds * prediction.value) }}</p>
+                    <td v-else class="py-4 px-4 text-right">
+                      <p 
+                        class="font-normal text-default"
+                        :class="prediction.resultStatus === PredictionResultStatus.WIN ? 'text-success' : 'text-error'"
+                      >{{ prediction.resultStatus === PredictionResultStatus.LOSS ? '-' : '+'}}${{ formatMoney(prediction.resultValue) }}</p>
                     </td>
-                    <td v-else class="py-4 px-6 text-right">
-                      <p class="font-semibold text-default">${{ formatMoney(prediction.resultValue) }}</p>
-                    </td>
-                    <td class="py-4 px-6 text-center">
+                    <td class="py-4 px-4 text-center rounded-r-xl">
                       <UBadge
                         :color="getPredictionStatusColor(prediction.status, prediction.resultStatus)"
                         variant="soft"

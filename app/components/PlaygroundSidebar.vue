@@ -130,7 +130,7 @@ const dropdownItems = (id: string, name: string): DropdownMenuItem[][] => [
             }"
           >
             <template #item-trailing="{ item }">
-              <div class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5" @click.prevent @click.stop>
+              <div v-if="!item.disabled" class="flex items-center group-hover:gap-1.5 has-data-[state=open]:gap-1.5" @click.prevent @click.stop>
                 <UBadge
                   color="neutral"
                   variant="outline"

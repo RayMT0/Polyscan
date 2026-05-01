@@ -103,22 +103,26 @@ const resetCreatePlayground = () => {
 
             <div class="flex flex-col gap-4">
               <div>
-                <label class="block text-sm font-medium mb-2">Playground Name</label>
-                <UInput
-                  v-model="newPlaygroundForm.name"
-                  placeholder="e.g., Summer Trading"
-                  type="text"
-                />
+                <UFormField label="Playground Name" required>
+                  <UInput
+                    v-model="newPlaygroundForm.name"
+                    placeholder="e.g., Summer Trading"
+                    type="text"
+                    class="w-full"
+                  />  
+                </UFormField>
               </div>
 
               <div>
-                <label class="block text-sm font-medium mb-2">Initial Balance</label>
-                <UInput
-                  v-model.number="newPlaygroundForm.balance"
-                  placeholder="e.g., 5000"
-                  type="number"
-                  min="100"
-                />
+                <UFormField label="Initial balance" required>
+                  <UInput
+                    v-model.number="newPlaygroundForm.balance"
+                    placeholder="e.g., 5000"
+                    type="number"
+                    min="100"
+                    class="w-full"
+                  />
+                </UFormField>
               </div>
 
               <UAlert
@@ -164,6 +168,7 @@ const resetCreatePlayground = () => {
               size="lg"
               color="primary"
               icon="i-lucide-plus"
+              class="cursor-pointer"
             >
               Create Your First Playground
             </UButton>
