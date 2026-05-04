@@ -152,7 +152,7 @@ const dropdownItems = (id: string, name: string): DropdownMenuItem[][] => [
                       color="neutral"
                       variant="ghost"
                       size="xs"
-                      class="text-muted hover:text-highlighted hover:bg-accented/50 data-[state=open]:bg-accented/50 mr-1.5"
+                      class="text-muted hover:text-highlighted hover:bg-accented/50 data-[state=open]:bg-accented/50 mr-1.5 cursor-pointer"
                     />
                   </UDropdownMenu>
                 </div>

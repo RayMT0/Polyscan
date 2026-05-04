@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Playground, Prediction, PredictionsResultStatus, PredictionsStatus } from '~/types/playground';
 import { PredictionResultStatus, PredictionStatus } from '~/types/playground';
-import { PredictionResult } from '~~/prisma/generated/enums';
+import { predictionColumns } from '~/components/columns/prediction-columns';
 
 definePageMeta({
   layout: 'playgrounds',
@@ -131,19 +131,7 @@ const predictions = computed(() => {
 //     else return null;
 // })
 
-const getPredictionStatusColor = (status: string, result?: string) => {
-  if (status === PredictionStatus.ACTIVE) return 'secondary';
-  if (result === PredictionResultStatus.WIN) return 'primary';
-  if (result === PredictionResultStatus.LOSS) return 'error';
-  return 'neutral';
-};
 
-const getPredictionStatusLabel = (status: PredictionsStatus, result: PredictionsResultStatus) => {
-  if (status === PredictionStatus.ACTIVE) return 'Ongoing';
-  if (result === PredictionResultStatus.WIN) return 'Win';
-  if (result === PredictionResultStatus.LOSS) return 'Loss';
-  return 'Closed';
-};
 
 const getPnlColor = (pnl: number) => {
   if (pnl > 0) return 'text-primary';
@@ -264,7 +252,7 @@ const getPnlLabelColor = (pnl: number) => {
             <UCard>
               <div class="flex flex-col gap-3">
                 <div class="flex items-center justify-between">
-                  <p class="text-sm font-medium text-muted">Active Bets</p>
+                  <p class="text-sm font-medium text-muted">Active Predictions</p>
                   <UIcon name="i-lucide-zap" class="size-5 text-muted" />
                 </div>
                 <p class="text-3xl font-bold">{{ stats?.activePredictions ?? 'N/A' }}</p>
@@ -274,84 +262,47 @@ const getPnlLabelColor = (pnl: number) => {
           </div>
 
           <!-- Predictions Section -->
-          <UCard>
-            <!-- Tabs Header -->
-            <template #header>
-              <div class="flex items-center gap-4">
-                <h2 class="text-lg font-bold">Predictions</h2>
-                <div class="flex gap-2 ml-auto">
-                  <UButton
-                    @click="activeTab = PredictionStatus.ACTIVE"
-                    :color="activeTab === PredictionStatus.ACTIVE ? 'primary' : 'primary'"
-                    :variant="activeTab === PredictionStatus.ACTIVE ? 'solid' : 'ghost'"
-                    size="sm"
-                  >
-                    Active
-                  </UButton>
-                  <UButton
-                    @click="activeTab = PredictionStatus.CLOSED"
-                    :color="activeTab === PredictionStatus.CLOSED ? 'primary' : 'primary'"
-                    :variant="activeTab === PredictionStatus.CLOSED ? 'solid' : 'ghost'"
-                    size="sm"
-                  >
-                    Closed
-                  </UButton>
-                </div>
-              </div>
-            </template>
-
-            <!-- Table or Empty State - RAW TABLE VER -->
-            <div v-if="!mockPredictions" class="py-12 px-6 text-center">
-              <UIcon name="i-lucide-inbox" class="size-12 text-muted mx-auto mb-3" />
-              <p class="text-muted">No {{ activeTab.toLowerCase() }} predictions yet</p>
+          <div class="flex flex-col items-start gap-4 mb-4">
+            <h2 class="text-lg font-bold">Predictions</h2>
+            <div class="flex">
+              <UButton
+                @click="activeTab = PredictionStatus.ACTIVE"
+                :color="activeTab === PredictionStatus.ACTIVE ? 'primary' : 'primary'"
+                :variant="activeTab === PredictionStatus.ACTIVE ? 'solid' : 'subtle'"
+                size="sm"
+                class="rounded-r-none cursor-pointer"
+              >
+                Active
+              </UButton>
+              <UButton
+                @click="activeTab = PredictionStatus.CLOSED"
+                :color="activeTab === PredictionStatus.CLOSED ? 'primary' : 'primary'"
+                :variant="activeTab === PredictionStatus.CLOSED ? 'solid' : 'subtle'"
+                size="sm"
+                class="rounded-l-none cursor-pointer"
+              >
+                Closed
+              </UButton>
             </div>
+          </div>
+          <!-- Table or Empty State -->
+          <div v-if="!mockPredictions" class="py-12 px-6 text-center">
+            <UIcon name="i-lucide-inbox" class="size-12 text-muted mx-auto mb-3" />
+            <p class="text-muted">No {{ activeTab.toLowerCase() }} predictions yet</p>
+          </div>
 
-            <div v-else class="overflow-x-auto">
-              <table class="w-full text-sm table-auto">
-                <thead>
-                  <tr class="">
-                    <th class="text-left py-4 px-4 font-semibold text-muted">Event</th>
-                    <th class="text-left py-4 px-4 font-semibold text-muted">Side</th>
-                    <th class="text-right py-4 px-4 font-semibold text-muted">{{ activeTab === PredictionStatus.ACTIVE ? 'Potential Return' : 'Return' }}</th>
-                    <th class="text-center py-4 px-4 font-semibold text-muted">{{ activeTab === PredictionStatus.ACTIVE ? 'Status' : 'Result' }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="prediction in predictions"
-                    :key="prediction.id"
-                    class="odd:bg-muted odd:dark:bg-muted/30  even:bg-default"
-                  >
-                    <td class="py-4 px-4 rounded-l-xl">
-                      <p class="font-medium text-default line-clamp-2">{{ prediction.title }}</p>
-                    </td>
-                    <td class="py-4 px-4">
-                      <p class="text-default font-medium">{{ prediction.oddsTitle }} - {{ prediction.odds }}</p>
-                    </td>
-                    <td v-if="activeTab === PredictionStatus.ACTIVE" class="py-4 px-4 text-right">
-                      <p class="font-semibold text-default">${{ formatMoney(prediction.value) }}</p>
-                      <p class="font-normal text-success">+${{ formatMoney(prediction.odds * prediction.value) }}</p>
-                    </td>
-                    <td v-else class="py-4 px-4 text-right">
-                      <p 
-                        class="font-normal text-default"
-                        :class="prediction.resultStatus === PredictionResultStatus.WIN ? 'text-success' : 'text-error'"
-                      >{{ prediction.resultStatus === PredictionResultStatus.LOSS ? '-' : '+'}}${{ formatMoney(prediction.resultValue) }}</p>
-                    </td>
-                    <td class="py-4 px-4 text-center rounded-r-xl">
-                      <UBadge
-                        :color="getPredictionStatusColor(prediction.status, prediction.resultStatus)"
-                        variant="soft"
-                        size="sm"
-                      >
-                        {{ getPredictionStatusLabel(prediction.status, prediction.resultStatus) }}
-                      </UBadge>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </UCard>
+          <div v-else class="overflow-x-auto">
+            <UTable 
+              :data="predictions ?? []" 
+              :columns="predictionColumns" 
+              class="w-full text-sm"
+              :ui="{
+                thead: 'border-none',
+                tbody: '[&>tr]:odd:bg-muted [&>tr]:odd:dark:bg-muted/30 [&>tr]:even:bg-default divide-none',
+                separator: 'hidden'
+              }"
+              />
+          </div>
         </div>
       </div>
       <!-- End Content Scroll Area -->
