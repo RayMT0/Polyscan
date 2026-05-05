@@ -1,18 +1,19 @@
 import type { TableColumn } from "@nuxt/ui";
-import { PredictionResultStatus, PredictionStatus, type Prediction } from "~/types/playground";
+import { PredictionResult, PredictionStatus } from "~~/prisma/generated/enums";
 import { UBadge } from "#components";
+import type { Prediction } from "~/types/playground";
 
 const getPredictionStatusColor = (status: string, result: string) => {
   if (status === PredictionStatus.ACTIVE) return 'secondary';
-  if (result === PredictionResultStatus.WIN) return 'primary';
-  if (result === PredictionResultStatus.LOSS) return 'error';
+  if (result === PredictionResult.WIN) return 'primary';
+  if (result === PredictionResult.LOSS) return 'error';
   return 'neutral';
 };
 
 const getPredictionStatusLabel = (status: string, result: string) => {
   if (status === PredictionStatus.ACTIVE) return 'Ongoing';
-  if (result === PredictionResultStatus.WIN) return 'Win';
-  if (result === PredictionResultStatus.LOSS) return 'Loss';
+  if (result === PredictionResult.WIN) return 'Win';
+  if (result === PredictionResult.LOSS) return 'Loss';
   return 'Closed';
 };
 

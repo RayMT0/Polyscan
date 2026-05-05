@@ -23,6 +23,7 @@ const items = computed<NavigationMenuItem[]>(() => [
         :ui="{
             container: 'lg:px-6'
         }"
+        mode="slideover"
     >
         <template #title>
             <div class="flex items-center gap-3">
@@ -47,6 +48,10 @@ const items = computed<NavigationMenuItem[]>(() => [
                     size="md"
                 />
             </div>
+        </template>
+
+        <template #body>
+            <UNavigationMenu :items="items" orientation="vertical" />
         </template>
     </UHeader>
 </template>

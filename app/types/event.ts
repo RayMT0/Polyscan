@@ -1,3 +1,5 @@
+import type { EventStatus } from "~~/prisma/generated/enums";
+
 export interface Event {
   id: string;
   question: string;
@@ -16,6 +18,12 @@ export interface Event {
   teamA: TeamResponse | null;
   teamB: TeamResponse | null;
   eventMetadata: EventMetadataResponse;
+}
+
+export type CreateEventDB = {
+  polymarketId: string;
+  name: string;
+  status: EventStatus;
 }
 
 export interface EventCounts{

@@ -1,3 +1,6 @@
+import type { PredictionResult, PredictionStatus } from "~~/prisma/generated/enums";
+import type { CreateEventDB } from "./event";
+
 export interface PlaygroundSidebar {
   id: string;
   name: string;
@@ -26,8 +29,8 @@ export interface Playground extends PlaygroundSidebar{
 export interface Prediction {
   id: string;
   title: string;
-  status: PredictionsStatus;
-  resultStatus: PredictionsResultStatus;
+  status: PredictionStatus;
+  resultStatus: PredictionResult;
   value: number;
   resultValue: number;
   oddsTitle: string;
@@ -38,18 +41,15 @@ export interface Prediction {
   eventId: string;
 }
 
-export const PredictionStatus = {
-  ACTIVE: 'ACTIVE',
-  CLOSED: 'CLOSED'
-} as const
-
-export type PredictionsStatus = typeof PredictionStatus[keyof typeof PredictionStatus]
-
-export const PredictionResultStatus = {
-  WIN: 'WIN',
-  LOSS: 'LOSS',
-  ONGOING: 'ONGOING'
-} as const
-
-export type PredictionsResultStatus = typeof PredictionResultStatus[keyof typeof PredictionResultStatus]
+export type CreatePredictionDB = {
+  title: string;
+  status: PredictionStatus;
+  resultStatus: PredictionResult;
+  value: number;
+  resultValue: number;
+  oddsTitle: string;
+  odds: number;
+  playgroundId: string;
+  eventData: CreateEventDB;
+}
 

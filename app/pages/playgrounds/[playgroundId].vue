@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Playground, Prediction, PredictionsResultStatus, PredictionsStatus } from '~/types/playground';
-import { PredictionResultStatus, PredictionStatus } from '~/types/playground';
+import type { Playground, Prediction } from '~/types/playground';
+import { PredictionResult, PredictionStatus } from "~~/prisma/generated/enums";
 import { predictionColumns } from '~/components/columns/prediction-columns';
 
 definePageMeta({
@@ -31,7 +31,7 @@ const mockPredictions: Prediction[] = [
     value: 500,
     resultValue: 750,
     status: PredictionStatus.ACTIVE,
-    resultStatus: PredictionResultStatus.ONGOING,
+    resultStatus: PredictionResult.ONGOING,
     eventId: '',
     createdAt: '',
     updatedAt: '',
@@ -45,7 +45,7 @@ const mockPredictions: Prediction[] = [
     value: 300,
     resultValue: 570,
     status: PredictionStatus.ACTIVE,
-    resultStatus: PredictionResultStatus.ONGOING,
+    resultStatus: PredictionResult.ONGOING,
     eventId: '',
     createdAt: '',
     updatedAt: '',
@@ -59,7 +59,7 @@ const mockPredictions: Prediction[] = [
     value: 200,
     resultValue: 320,
     status: PredictionStatus.ACTIVE,
-    resultStatus: PredictionResultStatus.ONGOING,
+    resultStatus: PredictionResult.ONGOING,
     eventId: '',
     createdAt: '',
     updatedAt: '',
@@ -73,7 +73,7 @@ const mockPredictions: Prediction[] = [
     value: 750,
     resultValue: 1125,
     status: PredictionStatus.CLOSED,
-    resultStatus: PredictionResultStatus.WIN,
+    resultStatus: PredictionResult.WIN,
     eventId: '',
     createdAt: '',
     updatedAt: '',
@@ -87,7 +87,7 @@ const mockPredictions: Prediction[] = [
     value: 400,
     resultValue: 640,
     status: PredictionStatus.CLOSED,
-    resultStatus: PredictionResultStatus.LOSS,
+    resultStatus: PredictionResult.LOSS,
     eventId: '',
     createdAt: '',
     updatedAt: '',
@@ -96,7 +96,7 @@ const mockPredictions: Prediction[] = [
 
 //UI States
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
-const activeTab = ref<PredictionsStatus>(PredictionStatus.ACTIVE);
+const activeTab = ref<PredictionStatus>(PredictionStatus.ACTIVE);
 
 
 const stats = computed(() => {

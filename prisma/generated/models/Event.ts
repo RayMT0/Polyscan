@@ -187,14 +187,14 @@ export type EventOrderByWithRelationInput = {
 
 export type EventWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  polymarketId?: string
   AND?: Prisma.EventWhereInput | Prisma.EventWhereInput[]
   OR?: Prisma.EventWhereInput[]
   NOT?: Prisma.EventWhereInput | Prisma.EventWhereInput[]
-  polymarketId?: Prisma.StringFilter<"Event"> | string
   name?: Prisma.StringFilter<"Event"> | string
   status?: Prisma.EnumEventStatusFilter<"Event"> | $Enums.EventStatus
   predictions?: Prisma.PredictionListRelationFilter
-}, "id">
+}, "id" | "polymarketId">
 
 export type EventOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
