@@ -10,6 +10,8 @@
             <GameFilter />
             <!-- Events Sections -->
             <slot />
+            <!-- Prediction Sidecard -->
+            <PredictionCard />
         </div>
     </NuxtLayout>
 </template>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Event } from '~/types/event';
 
-
 const props = defineProps<{
     event: Event;
 }>();
+
+const { selectEvent } = useEvents()
 
 const statusColor = computed(() => {
   if(props.event.live) {
@@ -31,7 +32,7 @@ const hktype = ref(true);
     variant="subtle"
     :class="event.live ? 'ring-1 ring-success/30' : ''"
     >
-        <div class="flex flex-col gap-4">
+        <div class="@container flex flex-col gap-4">
         <!-- Top row -->
             <!-- Game Info -->
             <div class="flex flex-row items-center gap-3 lg:min-w-48">
@@ -88,7 +89,7 @@ const hktype = ref(true);
             </div>
 
         <!-- Main Row -->
-            <div class="flex flex-row w-full @max-[490px]:flex-col gap-3">
+            <div class="flex flex-row w-full @max-[490px]:flex-col! gap-3">
 
                 <!-- Teams -->
                 <div class="flex flex-col gap-3 items-center w-full lg:w-auto lg:flex-1 @max-[490px]:w-full">
@@ -101,7 +102,7 @@ const hktype = ref(true);
                             <NuxtImg 
                                 :src="event.teamA?.logo === '' ? '/val-logo.png' : event.teamA?.logo || ''"
                                 loading="lazy"
-                                format="png"
+                                format="webp"
                                 class="size-8 object-contain rounded-lg" />
 
                             <div class="flex flex-1 items-baseline min-w-0 max-w-full overflow-hidden">
@@ -125,7 +126,7 @@ const hktype = ref(true);
                             <NuxtImg 
                                 :src="event.teamB?.logo === '' ? '/val-logo.png' : event.teamB?.logo || ''"
                                 loading="lazy"
-                                format="png"
+                                format="webp"
                                 class="size-8 object-contain rounded-lg" />
                             <span 
                                 class="flex flex-1 min-w-0 max-w-full font-medium text-default overflow-hidden">
@@ -138,16 +139,18 @@ const hktype = ref(true);
 
                 <!-- Odds Button -->
                 <div class="flex flex-1 justify-end items-center"> 
-                    <div class="flex items-end gap-2 w-64.5 @max-[490px]:w-full">
+                    <div class="flex flex-col sm:flex-row items-end gap-2 w-64.5 @max-[490px]:w-full">
                         <OddsButton
                             :color="event.teamA?.color || null"
                             :abbreviation="event.teamA?.abbreviation.toUpperCase() || 'N/A'"
                             :odds="hktype ? (1/(event.market?.odds1 || 1)-1).toFixed(2) : event.market?.odds1 || 'N/A'"
+                            :onClick="() => selectEvent(event, event.teamA)"
                         />
                         <OddsButton
                             :color="event.teamB?.color || null"
                             :abbreviation="event.teamB?.abbreviation.toUpperCase() || 'N/A'"
                             :odds="hktype ? (1/(event.market?.odds2 || 1)-1).toFixed(2) : event.market?.odds2 || 'N/A'"
+                            :onClick="() => selectEvent(event, event.teamB)"
                         />
                     </div>
                 </div>

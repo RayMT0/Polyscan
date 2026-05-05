@@ -9,11 +9,13 @@
 @media (min-width: 768px) {
     :root {
         --navbar-height: 64px;
+        --floatnav-height: 100px;
     }
 }
 
 :root{
     --navbar-height: 64px;
+    --floatnav-height: 100px;
 }
 
 @utility text-body-base{

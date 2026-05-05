@@ -12,8 +12,8 @@ const { data: counts, pending } = await useFetch<EventCounts>('/api/events-count
 
 <template>
     <div 
-        class="hidden lg:flex w-47.5 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky pt-6 gap-1"
-        style="top: var(--navbar-height); height: calc(100vh - var(--navbar-height));"
+        class="hidden lg:flex w-47.5 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky gap-1"
+        style="top: calc(2.25rem + var(--navbar-height)); height: calc(100vh - var(--floatnav-height));"
     >
     <!-- Filter Items -->
         <NuxtLink 
