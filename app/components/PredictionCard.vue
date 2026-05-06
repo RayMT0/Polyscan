@@ -20,6 +20,13 @@ const display = computed({
     }
 })
 
+const selectedOdds = computed(() => {
+    if((event.value?.teamA?.name ?? '') === team.value?.name){
+        return event.value?.market?.odds1 ?? 1
+    }
+    return event.value?.market?.odds2 ?? 1
+})
+
 const fontSizeClass = computed(() => {
     const len = display.value.length
 
@@ -60,7 +67,7 @@ const onlyNumber = (e: KeyboardEvent) => {
 
 <template>
     <div
-        class="hidden lg:flex w-92 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky pr-0.5 pl-3 gap-1"
+        class="hidden lg:flex w-89 shrink-0 flex-col overflow-y-auto scrollbar-hide sticky pr-0.5 pl-3 gap-1"
         style="top: calc(2.25rem + var(--navbar-height)); height: calc(100vh - var(--floatnav-height));"
     >
         <UCard 
@@ -90,25 +97,44 @@ const onlyNumber = (e: KeyboardEvent) => {
                 label="Amount"
                 size="xl"
                 orientation="horizontal"
+                :ui="{
+                    root: 'items-start'
+                }"
             >
                 <UInput
                     v-model="display"
                     @keypress="onlyNumber"
                     variant="none"
-                    class="w-full text-[100%]! tabular-nums tracking-tight "
+                    class="w-full tabular-nums tracking-tight overflow-hidden"
                     placeholder="$0"
                     inputmode="decimal"
+                    type="text"
                     :ui="{
-                        base: ['font-bold text-right', fontSizeClass]
+                        base: ['font-bold text-right p-0 leading-[1]!', fontSizeClass],
                     }"
                 />
             </UFormField>
             <template #footer>
-                <UButton
-                    label="Trade"
-                    class="w-full justify-center font-bold text-neutral-50 bg-primary-500"
-                    size="lg"
-                />
+                <div class="flex flex-col gap-6 w-full">
+                    <!-- To Win Result -->
+                    <div v-if="rawValue" class="w-full flex flex-row items-center">
+                        <span class="font-semibold">To win</span>
+                        <div class="flex flex-1 justify-end pl-4">
+                            <span 
+                                :style="{'--green-500': '#3db468'}"
+                                class="text-right text-(--green-500) text-4xl font-bold tabular-nums tracking-tight"
+                            >
+                                ${{ formatInputMoney(rawValue * (1/(selectedOdds)-1), 2) }}
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Trade Button -->
+                    <UButton
+                        label="Trade"
+                        class="w-full justify-center font-bold text-neutral-50 bg-primary-500"
+                        size="lg"
+                    />
+                </div>
             </template>
         </UCard>
     </div>

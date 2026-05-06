@@ -67,8 +67,11 @@ export function formatEventDate(dateStr: string): string {
   }
 }
 
-export function formatInputMoney(num: number): string {
-  return new Intl.NumberFormat('en-US').format(num)
+export function formatInputMoney(num: number, minFrac?: number): string {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: minFrac ?? 0,
+    maximumFractionDigits: 2
+  }).format(num)
 }
 
 export function parseNumber(str: string): number {
