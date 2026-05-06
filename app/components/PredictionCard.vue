@@ -1,7 +1,61 @@
-<script setup lang="ts">
-    
+<script setup lang="ts">    
 const { selectedEvent: event, selectedTeam: team } = useEvents()
-const value = ref(0)
+
+const MAX = 1_000_000_000
+
+const rawValue = ref<number | null>(null)
+const display = computed({
+    get(){
+        if(rawValue.value === null) return ''
+        return formatInputMoney(rawValue.value)
+    },
+    set(val: string){
+        const numeric = parseNumber(val)
+        if(isNaN(numeric)){
+            rawValue.value = null
+            return
+        }
+
+        rawValue.value = Math.min(numeric, MAX)
+    }
+})
+
+const fontSizeClass = computed(() => {
+    const len = display.value.length
+
+    if(len<9) return 'text-4xl'
+    if(len<10) return 'text-3xl'
+    if(len<11) return 'text-2xl'
+    return 'text-xl'
+})
+
+const onlyNumber = (e: KeyboardEvent) => {
+    const input = e.target as HTMLInputElement
+    const value = input.value
+    const start = input.selectionStart ?? value.length
+    const end = input.selectionEnd ?? value.length
+    const nextValue = value.slice(0, start) + e.key + value.slice(end)
+    
+    if(!/[0-9.]/.test(e.key)){
+        e.preventDefault()
+    }else{
+        if(value.includes('.')){
+            if(e.key === '.') e.preventDefault();
+    
+            const dotIndex = value.indexOf('.')
+            if(start > dotIndex){
+                const decimals = value.split('.')[1] || ''
+                if(decimals.length >= 2){
+                    e.preventDefault()
+                }
+            }
+            else if(start < dotIndex){
+                if(parseNumber(nextValue) > MAX) e.preventDefault();
+            }
+        }
+        if(parseNumber(nextValue) > MAX) e.preventDefault();
+    }
+}
 </script>
 
 <template>
@@ -32,22 +86,22 @@ const value = ref(0)
                     </div>
                 </div>
             </template>
-            <UFormField label="Amount">
+            <UFormField 
+                label="Amount"
+                size="xl"
+                orientation="horizontal"
+            >
                 <UInput
-                    v-model="value"
-                    variant="soft"
-                    :highlight="false"
-                    size="xl"
+                    v-model="display"
+                    @keypress="onlyNumber"
+                    variant="none"
+                    class="w-full text-[100%]! tabular-nums tracking-tight "
                     placeholder="$0"
+                    inputmode="decimal"
                     :ui="{
-                        base: '',
-                        leading: 'pointer-events-none'
+                        base: ['font-bold text-right', fontSizeClass]
                     }"
-                >
-                   <template #leading>
-                        <p class="text-muted">$</p>
-                   </template> 
-                </UInput>
+                />
             </UFormField>
             <template #footer>
                 <UButton

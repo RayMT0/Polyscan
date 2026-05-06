@@ -66,3 +66,11 @@ export function formatEventDate(dateStr: string): string {
     return `${dateFormatted}, ${timeStr}`
   }
 }
+
+export function formatInputMoney(num: number): string {
+  return new Intl.NumberFormat('en-US').format(num)
+}
+
+export function parseNumber(str: string): number {
+  return Number(str.replace(/[^\d.]/g,''))
+}
