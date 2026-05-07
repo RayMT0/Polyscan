@@ -20,6 +20,16 @@ export interface Event {
   eventMetadata: EventMetadataResponse;
 }
 
+export type SelectedEvent = {
+  id: string;
+  title: string;
+  teamA: TeamResponse | null;
+  teamB: TeamResponse | null;
+  oddsA: number;
+  oddsB: number;
+  selectedOdds: number;
+}
+
 export type CreateEventDB = {
   polymarketId: string;
   name: string;

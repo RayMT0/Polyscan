@@ -4,8 +4,10 @@ import type { CreateEventDB } from "./event";
 export interface PlaygroundSidebar {
   id: string;
   name: string;
-  initialBalance: number;
+  currentBalance: number;
 }
+
+export interface PlaygroundSelect extends PlaygroundSidebar {}
 
 export interface NewPlayground {
   name: string;
@@ -13,7 +15,7 @@ export interface NewPlayground {
 }
 
 export interface Playground extends PlaygroundSidebar{
-  currentBalance: number;
+  initialBalance: number;
   pnL: number;
   pnlPercentage: number;
   winCount: number;
@@ -52,4 +54,5 @@ export type CreatePredictionDB = {
   playgroundId: string;
   eventData: CreateEventDB;
 }
+
 

@@ -100,7 +100,7 @@ const hktype = ref(true);
                         </UBadge>
                         <div class="flex items-center gap-3 w-full overflow-hidden min-w-0 max-w-full">
                             <NuxtImg 
-                                :src="event.teamA?.logo === '' ? '/val-logo.png' : event.teamA?.logo || ''"
+                                :src="event.teamA?.logo === '' ? '/val-logo.png' : event.teamA?.logo ?? ''"
                                 loading="lazy"
                                 format="webp"
                                 class="size-8 object-contain rounded-lg" />
@@ -109,7 +109,7 @@ const hktype = ref(true);
                                 <span 
                                     class="font-semibold text-default line-clamp-1 whitespace-nowrap!">
                                     <span class="ml-1">
-                                        {{ event.market?.team1 || 'Team A' }}
+                                        {{ event.market?.team1 ?? 'Team A' }}
                                     </span>
                                 </span>
                             </div>
@@ -124,13 +124,13 @@ const hktype = ref(true);
                         </UBadge>
                         <div class="flex items-center gap-3 w-full">
                             <NuxtImg 
-                                :src="event.teamB?.logo === '' ? '/val-logo.png' : event.teamB?.logo || ''"
+                                :src="event.teamB?.logo === '' ? '/val-logo.png' : event.teamB?.logo ?? ''"
                                 loading="lazy"
                                 format="webp"
                                 class="size-8 object-contain rounded-lg" />
                             <span 
                                 class="flex flex-1 min-w-0 max-w-full font-medium text-default overflow-hidden">
-                                {{ event.market?.team2 || 'Team B' }}
+                                {{ event.market?.team2 ?? 'Team B' }}
                             </span>
                         </div>
                         
@@ -141,16 +141,16 @@ const hktype = ref(true);
                 <div class="flex flex-1 justify-end items-center"> 
                     <div class="flex flex-col sm:flex-row items-end gap-2 w-64.5 @max-[490px]:w-full">
                         <OddsButton
-                            :color="event.teamA?.color || null"
-                            :abbreviation="event.teamA?.abbreviation.toUpperCase() || 'N/A'"
-                            :odds="hktype ? (1/(event.market?.odds1 || 1)-1).toFixed(2) : event.market?.odds1 || 'N/A'"
-                            :onClick="() => selectEvent(event, event.teamA)"
+                            :color="event.teamA?.color ?? null"
+                            :abbreviation="event.teamA?.abbreviation.toUpperCase() ?? 'N/A'"
+                            :odds="hktype ? (1/(event.market?.odds1 ?? 1)-1).toFixed(2) : event.market?.odds1 ?? 'N/A'"
+                            :onClick="() => selectEvent(event, event.teamA, (1/(event.market?.odds1 ?? 1)-1))"
                         />
                         <OddsButton
-                            :color="event.teamB?.color || null"
-                            :abbreviation="event.teamB?.abbreviation.toUpperCase() || 'N/A'"
-                            :odds="hktype ? (1/(event.market?.odds2 || 1)-1).toFixed(2) : event.market?.odds2 || 'N/A'"
-                            :onClick="() => selectEvent(event, event.teamB)"
+                            :color="event.teamB?.color ?? null"
+                            :abbreviation="event.teamB?.abbreviation.toUpperCase() ?? 'N/A'"
+                            :odds="hktype ? (1/(event.market?.odds2 ?? 1)-1).toFixed(2) : event.market?.odds2 ?? 'N/A'"
+                            :onClick="() => selectEvent(event, event.teamB, (1/(event.market?.odds2 ?? 1)-1))"
                         />
                     </div>
                 </div>

@@ -26,7 +26,7 @@ const navItems = computed(() => {
     const id = pg.id
     const label = pg.name
     const icon = 'i-lucide-target'
-    const badge = `$${formatMoney(pg.initialBalance)}`
+    const badge = `$${formatMoney(pg.currentBalance)}`
     const to = `/playgrounds/${pg.id}`
     const active = route.path === `/playgrounds/${pg.id}`
     const disabled = deletingId.value === pg.id

@@ -1,5 +1,21 @@
-<script setup lang="ts">    
+<script setup lang="ts">
+import type { PlaygroundSelect } from '~/types/playground'
+
+    
 const { selectedEvent: event, selectedTeam: team } = useEvents()
+
+const { data: playgrounds, pending, execute } = await useLazyFetch('/api/prisma/playgrounds', {
+    query: { sortBy: 'updated' },
+    key: 'playground-select',
+    transform: (data: PlaygroundSelect[]) => {
+        return data?.map(playground => ({
+            label: playground.name,
+            value: playground.id,
+            balance: playground.currentBalance
+        }))
+    },
+    immediate: false,
+})
 
 const MAX = 1_000_000_000
 
@@ -18,13 +34,6 @@ const display = computed({
 
         rawValue.value = Math.min(numeric, MAX)
     }
-})
-
-const selectedOdds = computed(() => {
-    if((event.value?.teamA?.name ?? '') === team.value?.name){
-        return event.value?.market?.odds1 ?? 1
-    }
-    return event.value?.market?.odds2 ?? 1
 })
 
 const fontSizeClass = computed(() => {
@@ -63,6 +72,12 @@ const onlyNumber = (e: KeyboardEvent) => {
         if(parseNumber(nextValue) > MAX) e.preventDefault();
     }
 }
+
+function onOpen() {
+  if (!playgrounds.value?.length) {
+    execute()
+  }
+}
 </script>
 
 <template>
@@ -88,32 +103,52 @@ const onlyNumber = (e: KeyboardEvent) => {
                         class="size-8 object-contain rounded-lg" 
                     />
                     <div class="flex flex-col">
-                        <span class="text-sm text-muted font-medium">{{ event.teamA?.name ?? '' }} vs {{ event.teamB?.name ?? '' }}</span>
+                        <span class="text-sm text-muted font-medium">{{ event.title }}</span>
                         <span :style="{'--team-color': team.color || '#ccc'}" class="font-semibold text-(--team-color) dark:brightness-150">{{ team.name }}</span>
                     </div>
                 </div>
             </template>
-            <UFormField 
-                label="Amount"
-                size="xl"
-                orientation="horizontal"
-                :ui="{
-                    root: 'items-start'
-                }"
-            >
-                <UInput
-                    v-model="display"
-                    @keypress="onlyNumber"
-                    variant="none"
-                    class="w-full tabular-nums tracking-tight overflow-hidden"
-                    placeholder="$0"
-                    inputmode="decimal"
-                    type="text"
+            <!-- Main Content -->
+            <div class="flex flex-col gap-4">
+                <!-- Input prediction amount -->
+                <UFormField 
+                    label="Amount"
+                    size="xl"
+                    orientation="horizontal"
                     :ui="{
-                        base: ['font-bold text-right p-0 leading-[1]!', fontSizeClass],
+                        root: 'items-start'
                     }"
-                />
-            </UFormField>
+                >
+                    <UInput
+                        v-model="display"
+                        @keypress="onlyNumber"
+                        variant="none"
+                        class="w-full tabular-nums tracking-tight overflow-hidden"
+                        placeholder="$0"
+                        inputmode="decimal"
+                        type="text"
+                        :ui="{
+                            base: ['font-bold text-right p-0 leading-[1]!', fontSizeClass],
+                        }"
+                    />
+                </UFormField>
+                <!-- Select Playground -->
+                <USelectMenu 
+                    :items="playgrounds"
+                    :loading="pending"
+                    placeholder="Select playground"
+                    class="w-full"
+                    @update:open="onOpen"
+                    size="xl"
+                    :ui="{
+                        trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
+                    }"
+                >
+                    <template #item-description="{item}">
+                        <span class="text-muted">Balance: ${{ item.balance }}</span>
+                    </template>
+                </USelectMenu>
+            </div>
             <template #footer>
                 <div class="flex flex-col gap-6 w-full">
                     <!-- To Win Result -->
@@ -124,7 +159,7 @@ const onlyNumber = (e: KeyboardEvent) => {
                                 :style="{'--green-500': '#3db468'}"
                                 class="text-right text-(--green-500) text-4xl font-bold tabular-nums tracking-tight"
                             >
-                                ${{ formatInputMoney(rawValue * (1/(selectedOdds)-1), 2) }}
+                                ${{ formatInputMoney(rawValue * event.selectedOdds, 2) }}
                             </span>
                         </div>
                     </div>
