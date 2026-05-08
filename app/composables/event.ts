@@ -19,7 +19,6 @@ export const useEvents = () => {
             selectedEvent.value = null
         }
         selectedTeam.value = team
-        console.log(selectedEvent.value, selectedTeam.value)
     }
     return {
         selectedEvent,

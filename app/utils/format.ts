@@ -69,6 +69,9 @@ export function formatEventDate(dateStr: string): string {
 
 export function formatInputMoney(num: number, minFrac?: number): string {
   return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'symbol',
     minimumFractionDigits: minFrac ?? 0,
     maximumFractionDigits: 2
   }).format(num)

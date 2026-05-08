@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PlaygroundSelect } from '~/types/playground'
 
-    
 const { selectedEvent: event, selectedTeam: team } = useEvents()
 
 const { data: playgrounds, pending, execute } = await useLazyFetch('/api/prisma/playgrounds', {
@@ -18,6 +17,12 @@ const { data: playgrounds, pending, execute } = await useLazyFetch('/api/prisma/
 })
 
 const MAX = 1_000_000_000
+
+const selectedPlayground = ref<{
+    label: string,
+    value: string,
+    balance: number,
+}>()
 
 const rawValue = ref<number | null>(null)
 const display = computed({
@@ -39,10 +44,10 @@ const display = computed({
 const fontSizeClass = computed(() => {
     const len = display.value.length
 
-    if(len<9) return 'text-4xl'
-    if(len<10) return 'text-3xl'
-    if(len<11) return 'text-2xl'
-    return 'text-xl'
+    if(len<9) return 'text-[40px]'
+    if(len<10) return 'text-[38px]'
+    if(len<11) return 'text-[35px]'
+    return 'text-[32px]'
 })
 
 const onlyNumber = (e: KeyboardEvent) => {
@@ -109,31 +114,10 @@ function onOpen() {
                 </div>
             </template>
             <!-- Main Content -->
-            <div class="flex flex-col gap-4">
-                <!-- Input prediction amount -->
-                <UFormField 
-                    label="Amount"
-                    size="xl"
-                    orientation="horizontal"
-                    :ui="{
-                        root: 'items-start'
-                    }"
-                >
-                    <UInput
-                        v-model="display"
-                        @keypress="onlyNumber"
-                        variant="none"
-                        class="w-full tabular-nums tracking-tight overflow-hidden"
-                        placeholder="$0"
-                        inputmode="decimal"
-                        type="text"
-                        :ui="{
-                            base: ['font-bold text-right p-0 leading-[1]!', fontSizeClass],
-                        }"
-                    />
-                </UFormField>
+            <div class="flex flex-col">
                 <!-- Select Playground -->
-                <USelectMenu 
+                <USelectMenu
+                    v-model="selectedPlayground"
                     :items="playgrounds"
                     :loading="pending"
                     placeholder="Select playground"
@@ -148,6 +132,35 @@ function onOpen() {
                         <span class="text-muted">Balance: ${{ item.balance }}</span>
                     </template>
                 </USelectMenu>
+                <span
+                    v-if="selectedPlayground"
+                    class="text-muted text-sm mt-2" 
+                >
+                    Balance available: ${{ selectedPlayground.balance }}
+                </span>
+                <!-- Input prediction amount -->
+                <UFormField 
+                    label="Amount"
+                    size="xl"
+                    orientation="horizontal"
+                    class="mt-4"
+                    :ui="{
+                        root: 'items-start'
+                    }"
+                >
+                    <UInput
+                        v-model="display"
+                        @keypress="onlyNumber"
+                        variant="none"
+                        class="w-full tabular-nums tracking-tight overflow-hidden pl-2"
+                        placeholder="$0"
+                        inputmode="decimal"
+                        type="text"
+                        :ui="{
+                            base: ['font-bold text-right p-0 leading-[1]!', fontSizeClass],
+                        }"
+                    />
+                </UFormField>
             </div>
             <template #footer>
                 <div class="flex flex-col gap-6 w-full">
@@ -159,7 +172,7 @@ function onOpen() {
                                 :style="{'--green-500': '#3db468'}"
                                 class="text-right text-(--green-500) text-4xl font-bold tabular-nums tracking-tight"
                             >
-                                ${{ formatInputMoney(rawValue * event.selectedOdds, 2) }}
+                                {{ formatInputMoney(rawValue * event.selectedOdds, 2) }}
                             </span>
                         </div>
                     </div>
