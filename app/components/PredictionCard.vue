@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type { PlaygroundSelect } from '~/types/playground'
+import type { CreateEventDB } from '~/types/event';
+import type { CreatePredictionDB, PlaygroundSelect } from '~/types/playground'
+import { PredictionResult, PredictionStatus, EventStatus } from "~~/prisma/generated/enums";
 
 const { selectedEvent: event, selectedTeam: team } = useEvents()
 
@@ -17,6 +19,7 @@ const { data: playgrounds, pending, execute } = await useLazyFetch('/api/prisma/
 })
 
 const MAX = 1_000_000_000
+const isLoading = ref<boolean>(false)
 
 const selectedPlayground = ref<{
     label: string,
@@ -79,10 +82,53 @@ const onlyNumber = (e: KeyboardEvent) => {
 }
 
 function onOpen() {
-  if (!playgrounds.value?.length) {
+    if (!playgrounds.value?.length) {
     execute()
-  }
+    }
 }
+
+function resetPredictionForm(){
+    rawValue.value = null;
+    selectedPlayground.value = undefined;
+}
+
+async function postPrediction(){
+    try {
+        if (!rawValue.value || !selectedPlayground.value) return;
+        
+        isLoading.value = true
+    
+        const relEvent: CreateEventDB = {
+            polymarketId: event.value?.id ?? '',
+            name: event.value?.title ?? '',
+            status: EventStatus.ONGOING
+        }
+        
+        const newPrediction: CreatePredictionDB = {
+            title: event.value?.title ?? 'Team A vs Team B',
+            value: rawValue.value,
+            oddsTitle: team.value?.name ?? 'Team X',
+            odds: event.value?.selectedOdds ?? 1,
+            resultValue: (rawValue.value * (event.value?.selectedOdds ?? 1)),
+            status: PredictionStatus.ACTIVE,
+            resultStatus: PredictionResult.ONGOING,
+            playgroundId: selectedPlayground.value.value,
+            eventData: relEvent
+        };
+        
+        const res = await useFetch('/api/prisma/predictions/create', {
+        method: 'POST',
+        body: newPrediction
+        })
+
+        resetPredictionForm();
+  } catch (error) {
+        console.error('Error posting prediction:', error)
+  } finally {
+        isLoading.value = false
+  } 
+}
+
 </script>
 
 <template>
@@ -181,6 +227,9 @@ function onOpen() {
                         label="Trade"
                         class="w-full justify-center font-bold text-neutral-50 bg-primary-500"
                         size="lg"
+                        :loading="isLoading"
+                        @click="postPrediction"
+                        :disabled="isLoading"
                     />
                 </div>
             </template>

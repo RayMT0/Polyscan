@@ -101,7 +101,7 @@ const activeTab = ref<PredictionStatus>(PredictionStatus.ACTIVE);
 
 const stats = computed(() => {
     if (!playground.value) return null;
-    const pnl = playground.value.currentBalance - playground.value.initialBalance;
+    const pnl = playground.value.currentBalance - playground.value.initialBalance + playground.value.activeValue;
     const pnlPercent = ((pnl / playground.value.initialBalance) * 100).toFixed(2);
 
     const winRate = playground.value.winRate;
@@ -118,18 +118,18 @@ const stats = computed(() => {
     };
 });
 
-const predictions = computed(() => {
-    if(mockPredictions.length > 0){
-        return mockPredictions.filter((p: Prediction) => p.status === activeTab.value)
-    }
-    else return null;
-})
 // const predictions = computed(() => {
-//     if(playground.value?.predictions && playground.value.predictions.length > 0){
-//         return playground.value.predictions.filter((p: Prediction) => p.status === activeTab.value)
+//     if(mockPredictions.length > 0){
+//         return mockPredictions.filter((p: Prediction) => p.status === activeTab.value)
 //     }
 //     else return null;
 // })
+const predictions = computed(() => {
+    if(playground.value?.predictions && playground.value.predictions.length > 0){
+        return playground.value.predictions.filter((p: Prediction) => p.status === activeTab.value)
+    }
+    else return null;
+})
 
 
 

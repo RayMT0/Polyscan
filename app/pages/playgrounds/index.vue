@@ -20,9 +20,9 @@ const newPlaygroundForm = reactive({
 // Helper to select playground
 const createPlayground = async () => {
   try {
+    if (!newPlaygroundForm.name) return;
     isLoading.value = true
   
-    if (!newPlaygroundForm.name) return;
     if(newPlaygroundForm.balance === null){
       newPlaygroundForm.balance = 100
     }
