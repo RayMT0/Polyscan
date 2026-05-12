@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
                 where: { polymarketId: eventData.polymarketId },
                 update: {},
                 create: {
-                    polymarketId: eventData.name,
+                    polymarketId: eventData.polymarketId,
                     name: eventData.name,
                     status: eventData.status,
                 }

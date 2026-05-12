@@ -7,7 +7,7 @@ export const useEvents = () => {
     const selectEvent = (event: Event | null, team: TeamResponse | null, selectedOdds?: number) => {
         if(event){
             selectedEvent.value = {
-                id: event.id,
+                id: event.market?.id ?? 'N/A',
                 title: `${event.teamA?.name ?? 'Team A'} vs ${event.teamB?.name ?? 'Team B'}`,
                 teamA: event.teamA,
                 teamB: event.teamB,
@@ -19,6 +19,7 @@ export const useEvents = () => {
             selectedEvent.value = null
         }
         selectedTeam.value = team
+        console.log(event)
     }
     return {
         selectedEvent,
