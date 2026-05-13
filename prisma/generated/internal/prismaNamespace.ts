@@ -748,9 +748,7 @@ export const PlaygroundScalarFieldEnum = {
   initialBalance: 'initialBalance',
   currentBalance: 'currentBalance',
   pnL: 'pnL',
-  pnlPerentage: 'pnlPerentage',
   winCount: 'winCount',
-  winRate: 'winRate',
   activeValue: 'activeValue',
   activePredictions: 'activePredictions',
   totalPredictions: 'totalPredictions',
@@ -770,6 +768,7 @@ export const PredictionScalarFieldEnum = {
   resultValue: 'resultValue',
   oddsTitle: 'oddsTitle',
   odds: 'odds',
+  resolvedSync: 'resolvedSync',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   eventId: 'eventId',
@@ -909,6 +908,13 @@ export type EnumPredictionResultFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'PredictionResult[]'
  */
 export type ListEnumPredictionResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PredictionResult[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

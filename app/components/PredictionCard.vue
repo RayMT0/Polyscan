@@ -109,7 +109,7 @@ async function postPrediction(){
             value: rawValue.value,
             oddsTitle: team.value?.name ?? 'Team X',
             odds: event.value?.selectedOdds ?? 1,
-            resultValue: (rawValue.value * (event.value?.selectedOdds ?? 1)),
+            resultValue: (rawValue.value * (event.value?.selectedOdds ?? 1)) + rawValue.value,
             status: PredictionStatus.ACTIVE,
             resultStatus: PredictionResult.ONGOING,
             playgroundId: selectedPlayground.value.value,

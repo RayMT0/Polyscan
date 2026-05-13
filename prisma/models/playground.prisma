@@ -4,9 +4,7 @@ model Playground {
     initialBalance      Decimal             @db.Decimal(15,2) @default(0) @map("initial_balance")
     currentBalance      Decimal             @db.Decimal(15,2) @default(0) @map("current_balance")
     pnL                 Decimal             @db.Decimal(15,2) @default(0) @map("pnl")
-    pnlPerentage        Decimal             @db.Decimal(5,2) @default(0) @map("pnl_percentage")
     winCount            Int                 @default(0) @map("win_count")
-    winRate             Decimal             @db.Decimal(5,2) @default(0) @map("win_rate")
     activeValue         Int                 @default(0) @map("active_value")
     activePredictions   Int                 @default(0) @map("active_predictions")
     totalPredictions    Int                 @default(0) @map("total_predictions")
@@ -26,6 +24,7 @@ model Prediction {
     resultValue         Decimal             @db.Decimal(15,2) @default(0) @map("result_value")
     oddsTitle           String              @map("odds_title")
     odds                Decimal             @db.Decimal(5,2) @default(0)
+    resolvedSync        Boolean             @default(false) @map("resolved_sync")
     createdAt           DateTime            @db.Timestamptz() @default(now()) @map("created_at")
     updatedAt           DateTime            @db.Timestamptz() @updatedAt @map("updated_at")
     //each prediction has exactly 1 event

@@ -93,6 +93,14 @@ export type MarketResponse = {
   sportsMarketType: string;
 };
 
+export type MarketResolverResponse = {
+  team1: string;
+  team2: string;
+  odds1: number;
+  odds2: number;
+  resolved: boolean;
+}
+
 export type TeamResponse = {
   name: string;
   logo: string;

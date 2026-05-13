@@ -17,9 +17,7 @@ export interface NewPlayground {
 export interface Playground extends PlaygroundSidebar{
   initialBalance: number;
   pnL: number;
-  pnlPercentage: number;
   winCount: number;
-  winRate: number;
   activeValue: number;
   activePredictions: number;
   totalPredictions: number;

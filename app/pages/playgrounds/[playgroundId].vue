@@ -11,7 +11,7 @@ const { playgrounds } = usePlaygrounds()
 const route = useRoute()
 
 //Data
-const { data: playground, pending } = await useFetch<Playground>(
+const { data: playground, pending, refresh: refreshCurrPg } = await useFetch<Playground>(
     () => `/api/prisma/playgrounds/${route.params.playgroundId}`,
     {
         key: () => `pg-${route.params.playgroundId}`,
@@ -20,91 +20,17 @@ const { data: playground, pending } = await useFetch<Playground>(
     }
 )
 
-//Mock Data
-const mockPredictions: Prediction[] = [
-  {
-    id: '1',
-    playgroundId: '1',
-    title: 'Team A vs Team B - LCS Finals',
-    oddsTitle: 'Team A',
-    odds: 1.5,
-    value: 500,
-    resultValue: 750,
-    status: PredictionStatus.ACTIVE,
-    resultStatus: PredictionResult.ONGOING,
-    eventId: '',
-    createdAt: '',
-    updatedAt: '',
-  },
-  {
-    id: '2',
-    playgroundId: '1',
-    title: 'FaZe vs Natus Vincere - CS2 Pro League',
-    oddsTitle: 'FaZe',
-    odds: 1.9,
-    value: 300,
-    resultValue: 570,
-    status: PredictionStatus.ACTIVE,
-    resultStatus: PredictionResult.ONGOING,
-    eventId: '',
-    createdAt: '',
-    updatedAt: '',
-  },
-  {
-    id: '3',
-    playgroundId: '1',
-    title: 'G2 vs Fnatic - Valorant Champions',
-    oddsTitle: 'G2',
-    odds: 1.6,
-    value: 200,
-    resultValue: 320,
-    status: PredictionStatus.ACTIVE,
-    resultStatus: PredictionResult.ONGOING,
-    eventId: '',
-    createdAt: '',
-    updatedAt: '',
-  },
-  {
-    id: '4',
-    playgroundId: '1',
-    title: 'Team Liquid vs Evil Geniuses - Dota 2',
-    oddsTitle: 'Team Liquid',
-    odds: 1.5,
-    value: 750,
-    resultValue: 1125,
-    status: PredictionStatus.CLOSED,
-    resultStatus: PredictionResult.WIN,
-    eventId: '',
-    createdAt: '',
-    updatedAt: '',
-  },
-  {
-    id: '5',
-    playgroundId: '1',
-    title: 'Sentinels vs FaZe - VCT Masters',
-    oddsTitle: 'Sentinels',
-    odds: 1.6,
-    value: 400,
-    resultValue: 640,
-    status: PredictionStatus.CLOSED,
-    resultStatus: PredictionResult.LOSS,
-    eventId: '',
-    createdAt: '',
-    updatedAt: '',
-  },
-];
-
 //UI States
 const { isCreatingPlayground, sidebarOpen } = usePlaygroundStates()
 const activeTab = ref<PredictionStatus>(PredictionStatus.ACTIVE);
-
+const isResolving = ref<boolean>(false);
 
 const stats = computed(() => {
     if (!playground.value) return null;
     const pnl = playground.value.currentBalance - playground.value.initialBalance + playground.value.activeValue;
     const pnlPercent = ((pnl / playground.value.initialBalance) * 100).toFixed(2);
 
-    const winRate = playground.value.winRate;
+    const winRate = (playground.value.winCount / playground.value.totalPredictions).toFixed(2);
 
     const activePredictions = playground.value.activePredictions;
     const activeValue = playground.value.activeValue;
@@ -118,12 +44,7 @@ const stats = computed(() => {
     };
 });
 
-// const predictions = computed(() => {
-//     if(mockPredictions.length > 0){
-//         return mockPredictions.filter((p: Prediction) => p.status === activeTab.value)
-//     }
-//     else return null;
-// })
+
 const predictions = computed(() => {
     if(playground.value?.predictions && playground.value.predictions.length > 0){
         return playground.value.predictions.filter((p: Prediction) => p.status === activeTab.value)
@@ -131,7 +52,21 @@ const predictions = computed(() => {
     else return null;
 })
 
+async function resolveEvents(){
+  try {
+    isResolving.value = true
 
+    await $fetch('/api/resolve-active-events', {
+      method: 'POST'
+    })
+
+    await refreshCurrPg();
+  } catch (err) {
+    console.error(err)    
+  } finally {
+    isResolving.value = false
+  }
+}
 
 const getPnlColor = (pnl: number) => {
   if (pnl > 0) return 'text-primary';
@@ -264,7 +199,7 @@ const getPnlLabelColor = (pnl: number) => {
           <!-- Predictions Section -->
           <div class="flex flex-col items-start gap-4 mb-4">
             <h2 class="text-lg font-bold">Predictions</h2>
-            <div class="flex">
+            <div class="flex flex-row">
               <UButton
                 @click="activeTab = PredictionStatus.ACTIVE"
                 :color="activeTab === PredictionStatus.ACTIVE ? 'primary' : 'primary'"
@@ -279,14 +214,22 @@ const getPnlLabelColor = (pnl: number) => {
                 :color="activeTab === PredictionStatus.CLOSED ? 'primary' : 'primary'"
                 :variant="activeTab === PredictionStatus.CLOSED ? 'solid' : 'subtle'"
                 size="sm"
-                class="rounded-l-none cursor-pointer"
+                class="rounded-l-none cursor-pointer mr-5"
               >
                 Closed
               </UButton>
+              <UButton
+                label="Resolve Ongoing Events"
+                :icon="isResolving ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw'"
+                :loading="isResolving"
+                @click="resolveEvents"
+                :disabled="isResolving"
+                class="cursor-pointer"
+              />
             </div>
           </div>
           <!-- Table or Empty State -->
-          <div v-if="!mockPredictions" class="py-12 px-6 text-center">
+          <div v-if="!predictions" class="py-12 px-6 text-center">
             <UIcon name="i-lucide-inbox" class="size-12 text-muted mx-auto mb-3" />
             <p class="text-muted">No {{ activeTab.toLowerCase() }} predictions yet</p>
           </div>

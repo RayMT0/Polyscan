@@ -47,6 +47,7 @@ export type PredictionMinAggregateOutputType = {
   resultValue: runtime.Decimal | null
   oddsTitle: string | null
   odds: runtime.Decimal | null
+  resolvedSync: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   eventId: string | null
@@ -62,6 +63,7 @@ export type PredictionMaxAggregateOutputType = {
   resultValue: runtime.Decimal | null
   oddsTitle: string | null
   odds: runtime.Decimal | null
+  resolvedSync: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   eventId: string | null
@@ -77,6 +79,7 @@ export type PredictionCountAggregateOutputType = {
   resultValue: number
   oddsTitle: number
   odds: number
+  resolvedSync: number
   createdAt: number
   updatedAt: number
   eventId: number
@@ -106,6 +109,7 @@ export type PredictionMinAggregateInputType = {
   resultValue?: true
   oddsTitle?: true
   odds?: true
+  resolvedSync?: true
   createdAt?: true
   updatedAt?: true
   eventId?: true
@@ -121,6 +125,7 @@ export type PredictionMaxAggregateInputType = {
   resultValue?: true
   oddsTitle?: true
   odds?: true
+  resolvedSync?: true
   createdAt?: true
   updatedAt?: true
   eventId?: true
@@ -136,6 +141,7 @@ export type PredictionCountAggregateInputType = {
   resultValue?: true
   oddsTitle?: true
   odds?: true
+  resolvedSync?: true
   createdAt?: true
   updatedAt?: true
   eventId?: true
@@ -238,6 +244,7 @@ export type PredictionGroupByOutputType = {
   resultValue: runtime.Decimal
   oddsTitle: string
   odds: runtime.Decimal
+  resolvedSync: boolean
   createdAt: Date
   updatedAt: Date
   eventId: string
@@ -276,6 +283,7 @@ export type PredictionWhereInput = {
   resultValue?: Prisma.DecimalFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFilter<"Prediction"> | string
   odds?: Prisma.DecimalFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFilter<"Prediction"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Prediction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Prediction"> | Date | string
   eventId?: Prisma.StringFilter<"Prediction"> | string
@@ -293,6 +301,7 @@ export type PredictionOrderByWithRelationInput = {
   resultValue?: Prisma.SortOrder
   oddsTitle?: Prisma.SortOrder
   odds?: Prisma.SortOrder
+  resolvedSync?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -313,6 +322,7 @@ export type PredictionWhereUniqueInput = Prisma.AtLeast<{
   resultValue?: Prisma.DecimalFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFilter<"Prediction"> | string
   odds?: Prisma.DecimalFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFilter<"Prediction"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Prediction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Prediction"> | Date | string
   eventId?: Prisma.StringFilter<"Prediction"> | string
@@ -330,6 +340,7 @@ export type PredictionOrderByWithAggregationInput = {
   resultValue?: Prisma.SortOrder
   oddsTitle?: Prisma.SortOrder
   odds?: Prisma.SortOrder
+  resolvedSync?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -353,6 +364,7 @@ export type PredictionScalarWhereWithAggregatesInput = {
   resultValue?: Prisma.DecimalWithAggregatesFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringWithAggregatesFilter<"Prediction"> | string
   odds?: Prisma.DecimalWithAggregatesFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolWithAggregatesFilter<"Prediction"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Prediction"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Prediction"> | Date | string
   eventId?: Prisma.StringWithAggregatesFilter<"Prediction"> | string
@@ -368,6 +380,7 @@ export type PredictionCreateInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   event: Prisma.EventCreateNestedOneWithoutPredictionsInput
@@ -383,6 +396,7 @@ export type PredictionUncheckedCreateInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   eventId: string
@@ -398,6 +412,7 @@ export type PredictionUpdateInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   event?: Prisma.EventUpdateOneRequiredWithoutPredictionsNestedInput
@@ -413,6 +428,7 @@ export type PredictionUncheckedUpdateInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -428,6 +444,7 @@ export type PredictionCreateManyInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   eventId: string
@@ -443,6 +460,7 @@ export type PredictionUpdateManyMutationInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -456,6 +474,7 @@ export type PredictionUncheckedUpdateManyInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -481,6 +500,7 @@ export type PredictionCountOrderByAggregateInput = {
   resultValue?: Prisma.SortOrder
   oddsTitle?: Prisma.SortOrder
   odds?: Prisma.SortOrder
+  resolvedSync?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -502,6 +522,7 @@ export type PredictionMaxOrderByAggregateInput = {
   resultValue?: Prisma.SortOrder
   oddsTitle?: Prisma.SortOrder
   odds?: Prisma.SortOrder
+  resolvedSync?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -517,6 +538,7 @@ export type PredictionMinOrderByAggregateInput = {
   resultValue?: Prisma.SortOrder
   oddsTitle?: Prisma.SortOrder
   odds?: Prisma.SortOrder
+  resolvedSync?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
@@ -579,6 +601,10 @@ export type EnumPredictionResultFieldUpdateOperationsInput = {
   set?: $Enums.PredictionResult
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type PredictionCreateNestedManyWithoutEventInput = {
   create?: Prisma.XOR<Prisma.PredictionCreateWithoutEventInput, Prisma.PredictionUncheckedCreateWithoutEventInput> | Prisma.PredictionCreateWithoutEventInput[] | Prisma.PredictionUncheckedCreateWithoutEventInput[]
   connectOrCreate?: Prisma.PredictionCreateOrConnectWithoutEventInput | Prisma.PredictionCreateOrConnectWithoutEventInput[]
@@ -630,6 +656,7 @@ export type PredictionCreateWithoutPlaygroundInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   event: Prisma.EventCreateNestedOneWithoutPredictionsInput
@@ -644,6 +671,7 @@ export type PredictionUncheckedCreateWithoutPlaygroundInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   eventId: string
@@ -687,6 +715,7 @@ export type PredictionScalarWhereInput = {
   resultValue?: Prisma.DecimalFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFilter<"Prediction"> | string
   odds?: Prisma.DecimalFilter<"Prediction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFilter<"Prediction"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Prediction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Prediction"> | Date | string
   eventId?: Prisma.StringFilter<"Prediction"> | string
@@ -702,6 +731,7 @@ export type PredictionCreateWithoutEventInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   playground: Prisma.PlaygroundCreateNestedOneWithoutPredictionsInput
@@ -716,6 +746,7 @@ export type PredictionUncheckedCreateWithoutEventInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   playgroundId: string
@@ -756,6 +787,7 @@ export type PredictionCreateManyPlaygroundInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   eventId: string
@@ -770,6 +802,7 @@ export type PredictionUpdateWithoutPlaygroundInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   event?: Prisma.EventUpdateOneRequiredWithoutPredictionsNestedInput
@@ -784,6 +817,7 @@ export type PredictionUncheckedUpdateWithoutPlaygroundInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -798,6 +832,7 @@ export type PredictionUncheckedUpdateManyWithoutPlaygroundInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -812,6 +847,7 @@ export type PredictionCreateManyEventInput = {
   resultValue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle: string
   odds?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   playgroundId: string
@@ -826,6 +862,7 @@ export type PredictionUpdateWithoutEventInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   playground?: Prisma.PlaygroundUpdateOneRequiredWithoutPredictionsNestedInput
@@ -840,6 +877,7 @@ export type PredictionUncheckedUpdateWithoutEventInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   playgroundId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -854,6 +892,7 @@ export type PredictionUncheckedUpdateManyWithoutEventInput = {
   resultValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   oddsTitle?: Prisma.StringFieldUpdateOperationsInput | string
   odds?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  resolvedSync?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   playgroundId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -870,6 +909,7 @@ export type PredictionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   resultValue?: boolean
   oddsTitle?: boolean
   odds?: boolean
+  resolvedSync?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   eventId?: boolean
@@ -887,6 +927,7 @@ export type PredictionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   resultValue?: boolean
   oddsTitle?: boolean
   odds?: boolean
+  resolvedSync?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   eventId?: boolean
@@ -904,6 +945,7 @@ export type PredictionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   resultValue?: boolean
   oddsTitle?: boolean
   odds?: boolean
+  resolvedSync?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   eventId?: boolean
@@ -921,13 +963,14 @@ export type PredictionSelectScalar = {
   resultValue?: boolean
   oddsTitle?: boolean
   odds?: boolean
+  resolvedSync?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   eventId?: boolean
   playgroundId?: boolean
 }
 
-export type PredictionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "status" | "resultStatus" | "value" | "resultValue" | "oddsTitle" | "odds" | "createdAt" | "updatedAt" | "eventId" | "playgroundId", ExtArgs["result"]["prediction"]>
+export type PredictionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "status" | "resultStatus" | "value" | "resultValue" | "oddsTitle" | "odds" | "resolvedSync" | "createdAt" | "updatedAt" | "eventId" | "playgroundId", ExtArgs["result"]["prediction"]>
 export type PredictionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   playground?: boolean | Prisma.PlaygroundDefaultArgs<ExtArgs>
@@ -956,6 +999,7 @@ export type $PredictionPayload<ExtArgs extends runtime.Types.Extensions.Internal
     resultValue: runtime.Decimal
     oddsTitle: string
     odds: runtime.Decimal
+    resolvedSync: boolean
     createdAt: Date
     updatedAt: Date
     eventId: string
@@ -1393,6 +1437,7 @@ export interface PredictionFieldRefs {
   readonly resultValue: Prisma.FieldRef<"Prediction", 'Decimal'>
   readonly oddsTitle: Prisma.FieldRef<"Prediction", 'String'>
   readonly odds: Prisma.FieldRef<"Prediction", 'Decimal'>
+  readonly resolvedSync: Prisma.FieldRef<"Prediction", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Prediction", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Prediction", 'DateTime'>
   readonly eventId: Prisma.FieldRef<"Prediction", 'String'>
