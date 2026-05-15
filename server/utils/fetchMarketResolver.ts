@@ -3,7 +3,7 @@ import { MarketResolverResponse } from "~/types/event";
 
 export async function fetchMarketResolver(id: string){
 
-    const res = await axios.get(`https://gamma-api.polymarket.com/events/markets/${id}`);
+    const res = await axios.get(`https://gamma-api.polymarket.com/markets/${id}`);
 
     const market = res.data
     const data: MarketResolverResponse = {

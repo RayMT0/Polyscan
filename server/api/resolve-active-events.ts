@@ -6,7 +6,7 @@ export default defineEventHandler(async () => {
     } catch (error) {
         throw createError({
             statusCode: 500,
-            statusMessage: 'Failed to resolve all ongoing events'
+            statusMessage: `Failed to resolve all ongoing events : ${error}`
         })
     }
 })

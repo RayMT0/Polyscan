@@ -28,7 +28,7 @@ const isResolving = ref<boolean>(false);
 const stats = computed(() => {
     if (!playground.value) return null;
     const pnl = playground.value.currentBalance - playground.value.initialBalance + playground.value.activeValue;
-    const pnlPercent = ((pnl / playground.value.initialBalance) * 100).toFixed(2);
+    const pnlPercent = ((Math.abs(pnl) / playground.value.initialBalance) * 100).toFixed(2);
 
     const winRate = (playground.value.winCount / playground.value.totalPredictions).toFixed(2);
 
@@ -162,10 +162,10 @@ const getPnlLabelColor = (pnl: number) => {
                 </div>
                 <div class="flex items-baseline gap-2">
                   <p :class="['text-3xl font-bold', getPnlLabelColor(stats?.pnl ?? 0)]">
-                    {{ (stats?.pnl ?? 0) >= 0 ? '+' : '' }}${{ stats?.pnl ?? 0 }}
+                    {{ (stats?.pnl ?? 0) >= 0 ? '' : '-' }}${{ Math.abs(stats?.pnl ?? 0) }}
                   </p>
                   <p :class="['text-sm font-semibold', getPnlColor(stats?.pnl || 0)]">
-                    ({{ (stats?.pnl ?? 0) >= 0 ? '+' : '' }}{{ stats?.pnlPercent ?? 0 }}%)
+                    ({{ (stats?.pnl ?? 0) >= 0 ? '' : '-' }}{{ stats?.pnlPercent ?? 0 }}%)
                   </p>
                 </div>
               </div>
